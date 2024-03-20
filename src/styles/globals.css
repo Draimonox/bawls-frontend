@@ -29,15 +29,15 @@ body {
 /* headercolor= #57ada2 */
 
 header {
-  background-color: #57ada2; /* Set the background color */
-  color: white; /* Set the text color */
-  padding: 25px 0; /* Add padding to the top and bottom */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  background-color: #57ada2;
+  color: white;
+  padding: 25px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header ul {
   display: flex;
-  justify-content: center; /* Align items to the center horizontally */
+  justify-content: center;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -45,10 +45,10 @@ header ul {
 
 .dashboard {
   display: flex;
-  flex-wrap: wrap; /* Allow boxes to wrap to the next line */
-  justify-content: space-around; /* Align items with equal space around them */
-  margin-top: 20px; /* Add some top margin */
-  height: 100vh; /* Set the height of the dashboard to fill the viewport height */
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+  height: 100vh;
 }
 
 .box {
@@ -56,19 +56,20 @@ header ul {
   width: calc(
     35% - 20px
   ); /* Set the width of each box to 1/2 of the viewport width minus margin */
-  height: calc(
-    40% - 20px
-  ); /* Set the height of each box to 1/2 of the viewport height minus margin */
-  margin: 5px 10px; /* Add some margin between boxes */
-  background-color: #f0f0f0; /* Set the background color of each box */
-  border-radius: 25px; /* Add some border radius for rounded corners */
+  height: calc(40% - 20px);
+  margin: 5px 10px;
+  background-color: #f0f0f0;
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Align content with space between at the bottom */
   align-items: center; /* Align content horizontally in the center */
   box-shadow: 0 40px 40px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  padding: 30px; /* Add padding between button and border */
+  padding: 30px;
+  font-weight: bold;
+  color: black;
 }
+/* Add padding between button and border */
 
 .dashboard-button {
   margin-top: auto; /* Move the button to the bottom of the box */
@@ -97,6 +98,10 @@ header ul {
   transform: scale(0.98);
 }
 
+.header-content {
+  position: relative;
+}
+
 .connect-wallet-button {
   padding: 12.5px 30px;
   border: 0;
@@ -105,8 +110,11 @@ header ul {
   color: #ffffff;
   font-weight: bold;
   transition: all 0.25s;
-  -webkit-transition: all 0.25s;
-  cursor: pointer; /* Change cursor to pointer */
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: -10px;
+  right: 20px;
 }
 
 .connect-wallet-button:hover {
@@ -117,14 +125,27 @@ header ul {
 
 .connect-wallet-button:active {
   background-color: #3d94cf;
-  transition: all 0.25s;
-  -webkit-transition: all 0.25s;
   box-shadow: none;
   transform: scale(0.98);
 }
 
-.connect-wallet-button {
-  position: absolute;
-  right: 20px;
-  bottom: 870px;
+.wallet-address-container {
+  display: flex;
+  align-items: center;
+}
+
+.wallet-address {
+  margin-left: 1600px;
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  white-space: nowrap;
+  margin-top: -35px;
+  font-weight: bold;
+  color: black;
+}
+
+@media screen and (max-width: 768px) {
+  .wallet-address {
+    margin-left: 127px;
+  }
 }

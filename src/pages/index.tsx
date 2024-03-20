@@ -1,14 +1,13 @@
-// Import React and any necessary Next.js components
-import React from "react";
-import { useState, useEffect } from "react";
 import { NextPage } from "next";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ABI from "../.././BawlsAbi.json";
-// Define the Header component
 
+// Define the Header component
 const Header: React.FC = () => {
   const [contract, setContract] = useState(null);
   const [walletSigner, setWalletSigner] = useState(null);
+  const [walletAddress, setWalletAddress] = useState(null); // Add state for wallet address
 
   useEffect(() => {
     (async () => {
@@ -27,31 +26,40 @@ const Header: React.FC = () => {
     <header>
       <div className="header-content">
         <h1>BAWLS</h1>
-        <button
-          className="connect-wallet-button"
-          onClick={async () => {
-            try {
-              //@ts-expect-error
-              const accounts = await window?.ethereum?.request({
-                method: "eth_requestAccounts",
-              });
-              //@ts-expect-error
-              await window?.ethereum?.request({
-                method: "wallet_switchEthereumChain",
-                params: [{ chainId: "0xa86a" }],
-              });
-              //@ts-expect-error
-              const provider = new ethers.BrowserProvider(window?.ethereum);
-              const signer = await provider.getSigner();
+        <div className="wallet-address-container">
+          {walletAddress && (
+            <p className="wallet-address">
+              Wallet Connected: {walletAddress.slice(0, 5)}...
+              {walletAddress.slice(-5)}
+            </p>
+          )}
+          {!walletAddress && (
+            <button
+              className="connect-wallet-button"
+              onClick={async () => {
+                try {
+                  const accounts = await window?.ethereum?.request({
+                    method: "eth_requestAccounts",
+                  });
+                  await window?.ethereum?.request({
+                    method: "wallet_switchEthereumChain",
+                    params: [{ chainId: "0xa86a" }],
+                  });
+                  const provider = new ethers.BrowserProvider(window?.ethereum);
+                  const signer = await provider.getSigner();
 
-              setWalletSigner(signer);
-            } catch (error) {
-              console.error("Error connecting wallet:", error);
-            }
-          }}
-        >
-          Connect Wallet
-        </button>
+                  setWalletSigner(signer);
+                  const address = await signer.getAddress(); // Get wallet address
+                  setWalletAddress(address); // Set wallet address state
+                } catch (error) {
+                  console.error("Error connecting wallet:", error);
+                }
+              }}
+            >
+              Connect Wallet
+            </button>
+          )}
+        </div>
       </div>
       <div>
         <h1></h1>
@@ -109,46 +117,3 @@ const IndexPage: NextPage = () => {
 
 // Export the IndexPage component as the default export
 export default IndexPage;
-
-// const [contract, setContract] = useState(null);
-//   const [walletSigner, setWalletSigner] = useState(null);
-
-//   useEffect(() => {
-//     (async () => {
-//       if (walletSigner) {
-//         const testContract = new ethers.Contract(
-//           "0x5f47b84Be519750c73bfB8FAf83bB2ab3eFa5629",
-//           ABI,
-//           walletSigner
-//         );
-//         setContract(testContract);
-//       }
-//     })();
-//   }, [walletSigner]);
-
-//   console.log(`contract`, contract);
-
-//   return (
-//     <>
-//       <Button
-//         onClick={async () => {
-//           const accounts = await window?.ethereum?.request({
-//             method: "eth_requestAccounts",
-//           });
-//           await window?.ethereum?.request({
-//             method: "wallet_switchEthereumChain",
-//             params: [{ chainId: "0xa869" }],
-//           });
-
-//           const provider = new ethers.BrowserProvider(window?.ethereum);
-//           const signer = await provider.getSigner();
-
-//           setWalletSigner(signer);
-
-//           // console.log(accounts);
-//         }}
-//       >
-//         Connect wallet
-//       </Button>
-//     </>
-//   );
