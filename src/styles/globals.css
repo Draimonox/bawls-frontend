@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  background-color: #c7e7e0;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* headercolor= #57ada2 */
+
+header {
+  background-color: #57ada2; /* Set the background color */
+  color: white; /* Set the text color */
+  padding: 25px 0; /* Add padding to the top and bottom */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+header ul {
+  display: flex;
+  justify-content: center; /* Align items to the center horizontally */
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dashboard {
+  display: flex;
+  flex-wrap: wrap; /* Allow boxes to wrap to the next line */
+  justify-content: space-around; /* Align items with equal space around them */
+  margin-top: 20px; /* Add some top margin */
+  height: 100vh; /* Set the height of the dashboard to fill the viewport height */
+}
+
+.box {
+  flex-grow: 1; /* Allow boxes to grow to fill available space */
+  width: calc(
+    35% - 20px
+  ); /* Set the width of each box to 1/2 of the viewport width minus margin */
+  height: calc(
+    40% - 20px
+  ); /* Set the height of each box to 1/2 of the viewport height minus margin */
+  margin: 5px 10px; /* Add some margin between boxes */
+  background-color: #f0f0f0; /* Set the background color of each box */
+  border-radius: 25px; /* Add some border radius for rounded corners */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Align content with space between at the bottom */
+  align-items: center; /* Align content horizontally in the center */
+  box-shadow: 0 40px 40px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  padding: 30px; /* Add padding between button and border */
+}
+
+.dashboard-button {
+  margin-top: auto; /* Move the button to the bottom of the box */
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #c91c68;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+.dashboard-button:hover {
+  background-color: #cd5389;
+  box-shadow: 0 0 20px #930b47;
+  transform: scale(1.1);
+}
+
+.dashboard-button:active {
+  background-color: #3d94cf;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.connect-wallet-button {
+  padding: 12.5px 30px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #c91c68;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+.connect-wallet-button:hover {
+  background-color: #cd5389;
+  box-shadow: 0 0 20px #930b47;
+  transform: scale(1.1);
+}
+
+.connect-wallet-button:active {
+  background-color: #3d94cf;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.connect-wallet-button {
+  position: absolute;
+  right: 20px;
+  bottom: 870px;
+}
