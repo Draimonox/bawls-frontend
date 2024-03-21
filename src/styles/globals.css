@@ -31,7 +31,7 @@ body {
 header {
   background-color: #57ada2;
   color: white;
-  padding: 25px 0;
+  padding: 3px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -52,23 +52,28 @@ header ul {
 }
 
 .box {
-  flex-grow: 1; /* Allow boxes to grow to fill available space */
-  width: calc(
-    35% - 20px
-  ); /* Set the width of each box to 1/2 of the viewport width minus margin */
+  flex-grow: 1;
+  width: calc(35% - 20px);
   height: calc(40% - 20px);
   margin: 5px 10px;
-  background-color: #f0f0f0;
+  background-color: #9edfd1;
   border-radius: 25px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Align content with space between at the bottom */
-  align-items: center; /* Align content horizontally in the center */
-  box-shadow: 0 40px 40px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
   padding: 30px;
   font-weight: bold;
   color: black;
 }
+
+@media screen and (max-width: 768px) {
+  .box {
+    font-size: 12px;
+  }
+}
+
 /* Add padding between button and border */
 
 .dashboard-button {
@@ -113,7 +118,7 @@ header ul {
   cursor: pointer;
   position: absolute;
   z-index: 10;
-  top: -10px;
+  top: 12px;
   right: 20px;
 }
 
@@ -135,13 +140,18 @@ header ul {
 }
 
 .wallet-address {
-  margin-left: 1600px;
-  padding: 0.25rem 0.5rem;
   background-color: transparent;
   white-space: nowrap;
-  margin-top: -35px;
   font-weight: bold;
   color: black;
+  padding: 12.5px 30px;
+  border: 0;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: 12px;
+  right: 20px;
 }
 
 @media screen and (max-width: 768px) {

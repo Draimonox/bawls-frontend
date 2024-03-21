@@ -44,7 +44,7 @@ const Header: React.FC = () => {
               fontWeight: "bold",
               fontSize: "14px",
               marginTop: "5px",
-              marginLeft: "-7px",
+              marginLeft: "-6px",
               color: "black",
             }}
           >
@@ -93,52 +93,4 @@ const Header: React.FC = () => {
   );
 };
 
-const Dashboard: React.FC = () => {
-  return (
-    <div className="dashboard">
-      <div className="box">
-        <p>Total Staked NFTs</p>
-        <div className="button-container">
-          <a href="/stakedCount"></a>
-        </div>
-      </div>
-      <div className="box">
-        <p>View your staked NFTs</p>
-        <div className="button-container">
-          <a href="/view">
-            <button className="dashboard-button">View</button>
-          </a>
-        </div>
-      </div>
-      <div className="box">
-        <p>View your unstaked NFTs</p>
-        <div className="button-container">
-          <a href="/viewUnstaked">
-            <button className="dashboard-button">View & Stake</button>
-          </a>
-        </div>
-      </div>
-      <div className="box">
-        <p>Claim your BAWLS</p>
-        <div className="button-container">
-          <a href="/bawls">
-            <button className="dashboard-button">Claim</button>
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Define the IndexPage component (or any other name you prefer)
-const IndexPage: NextPage = () => {
-  return (
-    <div>
-      <Header />
-      <Dashboard />
-    </div>
-  );
-};
-
-// Export the IndexPage component as the default export
-export default IndexPage;
+export default Header;
