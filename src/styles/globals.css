@@ -43,19 +43,48 @@ header ul {
   margin: 0;
 }
 
+@media screen and (max-width: 768px) {
+  .dashboard {
+    justify-content: flex-start;
+  }
+  .box {
+    font-size: 10px;
+    max-height: calc(25% - 10px);
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .box:nth-child(1),
+  .box:nth-child(2) {
+    margin-bottom: 5px;
+  }
+
+  .box:nth-child(3),
+  .box:nth-child(4) {
+    margin-top: -200px;
+  }
+
+  .dashboard-button {
+    font-size: 10px !important; /* Set the font size of the button */
+    padding: 6px 12px !important; /* Set the padding of the button */
+  }
+}
+
 .dashboard {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
-  height: 100vh;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px;
+  height: 90vh;
+  box-sizing: border-box;
 }
 
 .box {
-  flex-grow: 1;
-  width: calc(35% - 20px);
-  height: calc(40% - 20px);
-  margin: 5px 10px;
+  flex: 1 0 45%;
+  /* max-width: calc(49% - 10px); */
+  /* height: 40vh; Set the height of each box */
+  margin: 0;
   background-color: #9edfd1;
   border-radius: 25px;
   display: flex;
@@ -63,18 +92,10 @@ header ul {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+  padding: 20px;
   font-weight: bold;
   color: black;
 }
-
-@media screen and (max-width: 768px) {
-  .box {
-    font-size: 12px;
-  }
-}
-
-/* Add padding between button and border */
 
 .dashboard-button {
   margin-top: auto; /* Move the button to the bottom of the box */
@@ -146,7 +167,6 @@ header ul {
   color: black;
   padding: 12.5px 30px;
   border: 0;
-  font-weight: bold;
   cursor: pointer;
   position: absolute;
   z-index: 10;
@@ -157,5 +177,14 @@ header ul {
 @media screen and (max-width: 768px) {
   .wallet-address {
     margin-left: 127px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .connect-wallet-button {
+    margin-left: 123px;
+    font-size: 10px !important;
+    padding: 6px 12px !important;
   }
 }

@@ -92,17 +92,16 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
 const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
-      <div className="box">
+      <div className="box box1">
         <p>Total Staked NFTs</p>
         <div className="button-container">
           <a href="/stakedCount"></a>
         </div>
       </div>
-      <div className="box">
+      <div className="box box2">
         <p>View your staked NFTs</p>
         <div className="button-container">
           <a href="/view">
@@ -110,7 +109,7 @@ const Dashboard: React.FC = () => {
           </a>
         </div>
       </div>
-      <div className="box">
+      <div className="box box3">
         <p>View your unstaked NFTs</p>
         <div className="button-container">
           <a href="/viewUnstaked">
@@ -118,7 +117,7 @@ const Dashboard: React.FC = () => {
           </a>
         </div>
       </div>
-      <div className="box">
+      <div className="box box4">
         <p>Claim your BAWLS</p>
         <div className="button-container">
           <a href="/bawls">
