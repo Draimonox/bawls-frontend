@@ -12,6 +12,7 @@
     "@mantine/core": "^7.6.2",
     "@mantine/hooks": "^7.6.2",
     "@mantinex/mantine-logo": "^1.0.1",
+    "@metamask/providers": "^16.0.0",
     "@tabler/icons-react": "^3.1.0",
     "ethers": "^6.11.1",
     "next": "14.1.4",

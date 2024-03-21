@@ -7,6 +7,14 @@ import image from "../styles/bawlsPic.png";
 import Image from "next/image";
 import Link from "next/link";
 
+import { MetaMaskInpageProvider } from "@metamask/providers";
+
+declare global {
+  interface Window {
+    ethereum?: MetaMaskInpageProvider;
+  }
+}
+
 // Define the Header component
 const Header: React.FC = () => {
   const [contract, setContract] = useState(null);
