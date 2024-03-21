@@ -25,7 +25,6 @@ const Header: React.FC = () => {
       }
     })();
   }, [walletSigner]);
-
   return (
     <header>
       <div className="header-content">
@@ -98,31 +97,31 @@ const Dashboard: React.FC = () => {
       <div className="box box1">
         <p>Total Staked NFTs</p>
         <div className="button-container">
-          <a href="/stakedCount"></a>
+          <Link href="/stakedCount"></Link>
         </div>
       </div>
       <div className="box box2">
         <p>View your staked NFTs</p>
         <div className="button-container">
-          <a href="/view">
+          <Link href="/view">
             <button className="dashboard-button">View</button>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="box box3">
         <p>View your unstaked NFTs</p>
         <div className="button-container">
-          <a href="/viewUnstaked">
+          <Link href="/viewUnstaked">
             <button className="dashboard-button">View & Stake</button>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="box box4">
         <p>Claim your BAWLS</p>
         <div className="button-container">
-          <a href="/bawls">
+          <Link href="/bawls">
             <button className="dashboard-button">Claim</button>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
