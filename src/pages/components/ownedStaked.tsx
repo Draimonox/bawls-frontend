@@ -36,12 +36,12 @@ const OwnedStaked: React.FC<StakedNFTProps> = ({
     const fetchStakedNFTs = async () => {
       try {
         const totalStakers = await contract.getRoleMemberCount(
-          ethers.hexlformatBytes32String("DEFAULT_ADMIN_ROLE")
+          ethers.id("DEFAULT_ADMIN_ROLE")
         );
         const stakedNFTs: string[] = [];
         for (let i = 0; i < totalStakers; i++) {
           const stakerAddress = await contract.getRoleMember(
-            ethers.formatBytes32String("DEFAULT_ADMIN_ROLE"),
+            ethers.id("DEFAULT_ADMIN_ROLE"),
             i
           );
           if (stakerAddress === walletAddress) {

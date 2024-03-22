@@ -8,7 +8,6 @@ import Link from "next/link";
 
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import StakedNFTs from "./components/totalStaked";
-import ownedStaked from "../pages/components/ownedStaked";
 import OwnedStaked from "../pages/components/ownedStaked";
 
 declare global {
