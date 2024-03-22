@@ -1,4 +1,3 @@
-import view from "../pages/components/NFTURI";
 import React, { useState, useEffect } from "react";
 import ethers from "ethers";
 
