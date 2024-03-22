@@ -2,12 +2,14 @@ import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import ABI from "../.././BawlsAbi.json";
-import everything from "./";
 import image from "../styles/bawlsPic.png";
 import Image from "next/image";
 import Link from "next/link";
 
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import StakedNFTs from "./components/totalStaked";
+import ownedStaked from "../pages/components/ownedStaked";
+import OwnedStaked from "../pages/components/ownedStaked";
 
 declare global {
   interface Window {
@@ -19,7 +21,6 @@ declare global {
 const Header: React.FC = () => {
   const [contract, setContract] = useState(null);
   const [walletSigner, setWalletSigner] = useState(null);
-  const [walletAddress, setWalletAddress] = useState(null); // Add state for wallet address
 
   useEffect(() => {
     (async () => {
@@ -59,13 +60,13 @@ const Header: React.FC = () => {
           </p>
         </div>
         <div className="wallet-address-container">
-          {walletAddress && (
+          {walletSigner?.address && (
             <p className="wallet-address">
-              Wallet: {walletAddress.slice(0, 5)}...
-              {walletAddress.slice(-5)}
+              Wallet: {walletSigner?.address.slice(0, 5)}...
+              {walletSigner?.address.slice(-5)}
             </p>
           )}
-          {!walletAddress && (
+          {!walletSigner?.address && (
             <button
               className="connect-wallet-button"
               onClick={async () => {
@@ -81,8 +82,6 @@ const Header: React.FC = () => {
                   const signer = await provider.getSigner();
 
                   setWalletSigner(signer);
-                  const address = await signer.getAddress(); // Get wallet address
-                  setWalletAddress(address); // Set wallet address state
                 } catch (error) {
                   console.error("Error connecting wallet:", error);
                 }
@@ -99,11 +98,23 @@ const Header: React.FC = () => {
     </header>
   );
 };
+
 const Dashboard: React.FC = () => {
+  const [contractAddress, setContractAddress] = useState<string | null>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+
+  const walletSigner = useState(null)[0];
+
+  useEffect(() => {
+    setContractAddress("0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3");
+    setWalletAddress(walletSigner?.address);
+  }, [walletSigner]);
   return (
     <div className="dashboard">
       <div className="box box1">
-        <p>Total Staked NFTs</p>
+        <div className="staked-nfts">
+          <StakedNFTs />
+        </div>
         <div className="button-container">
           <Link href="/stakedCount"></Link>
         </div>
@@ -111,6 +122,11 @@ const Dashboard: React.FC = () => {
       <div className="box box2">
         <p>View your staked NFTs</p>
         <div className="button-container">
+          <OwnedStaked
+            contractAddress={contractAddress}
+            walletAddress={walletAddress}
+          />
+
           <Link href="/view">
             <button className="dashboard-button">View</button>
           </Link>
@@ -146,5 +162,4 @@ const IndexPage: NextPage = () => {
   );
 };
 
-// Export the IndexPage component as the default export
 export default IndexPage;
