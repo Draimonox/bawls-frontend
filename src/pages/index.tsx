@@ -7,8 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { MetaMaskInpageProvider } from "@metamask/providers";
-import StakedNFTs from "./components/totalStaked";
-import OwnedStaked from "../pages/components/ownedStaked";
+import StakedNFTs from "./totalStaked";
+import OwnedStaked from "./ownedStaked";
 
 declare global {
   interface Window {
@@ -123,7 +123,7 @@ const Dashboard: React.FC = () => {
         <div className="button-container">
           <OwnedStaked />
 
-          <Link href="/view">
+          <Link href="/ownedStaked">
             <button className="dashboard-button">View</button>
           </Link>
         </div>

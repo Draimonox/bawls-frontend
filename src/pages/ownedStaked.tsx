@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import NFTContractABI from "../../../TezTickles.json";
-import StakingContractABI from "../../../stakingNFT.json";
+import NFTContractABI from "../../TezTickles.json";
+import StakingContractABI from "../../stakingNFT.json";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 
 const NFTContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
@@ -21,6 +21,9 @@ const OwnedStakedNFTs = () => {
         NFTContractABI,
         signer
       );
+
+      console.log("nftContract:", nftContract);
+
       const stakingContract = new ethers.Contract(
         StakingContractAddress,
         StakingContractABI,
@@ -28,9 +31,10 @@ const OwnedStakedNFTs = () => {
       );
 
       const balance = await nftContract.balanceOf(await signer.getAddress());
-      setNFTBalance(balance.toNumber());
+      setNFTBalance(balance);
+      console.log(typeof balance);
       const tokenIds = [];
-      for (let i = 0; i < balance.toNumber(); i++) {
+      for (let i = 0; i < balance; i++) {
         const tokenId = await nftContract.tokenOfOwnerByIndex(
           await signer.getAddress(),
           i

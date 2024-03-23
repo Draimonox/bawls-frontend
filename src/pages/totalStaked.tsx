@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import stakingNFT from "../../../stakingNFT.json";
+import stakingNFT from "../../stakingNFT.json";
 
 const contractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 const contractABI = stakingNFT;
