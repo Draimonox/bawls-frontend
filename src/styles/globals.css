@@ -83,6 +83,7 @@ header ul {
 .box {
   flex: 1 0 45%;
   max-width: 100%;
+  min-height: 250px;
   margin: 0;
   background-color: #9edfd1;
   border-radius: 25px;
@@ -95,6 +96,24 @@ header ul {
   font-weight: bold;
   color: black;
   box-sizing: border-box;
+}
+@media screen and (max-width: 768px) {
+  .box {
+    flex: 1 0 45%;
+    max-width: 100%;
+    min-height: 150px;
+    margin: 0;
+    background-color: #9edfd1;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    font-weight: bold;
+    color: black;
+  }
 }
 
 .dashboard-button {

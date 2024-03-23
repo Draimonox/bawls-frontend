@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { useRouter } from "next/router";
 import NFTContractABI from "../../TezTickles.json";
 import StakingContractABI from "../../stakingNFT.json";
-import { MetaMaskInpageProvider } from "@metamask/providers";
+import Header from "./components/Header";
 
 const NFTContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
 const StakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 
 const OwnedStakedNFTs = () => {
+  const router = useRouter();
   const [nftBalance, setNFTBalance] = useState(0);
   const [ownedStakedNFTs, setOwnedStakedNFTs] = useState([]);
 
@@ -59,14 +61,16 @@ const OwnedStakedNFTs = () => {
 
   return (
     <div>
-      <h1>NFTs Owned & Staked:</h1>
-      <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
-
-      <ul>
-        {ownedStakedNFTs.map((tokenId) => (
-          <li key={tokenId}>{tokenId}</li>
-        ))}
-      </ul>
+      {router.pathname === "/ownedStaked" && <Header />}
+      <div>
+        <h1>NFTs Owned & Staked:</h1>
+        <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
+        <ul>
+          {ownedStakedNFTs.map((tokenId) => (
+            <li key={tokenId}>{tokenId}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };

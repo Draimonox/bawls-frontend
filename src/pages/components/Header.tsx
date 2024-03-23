@@ -1,21 +1,14 @@
 import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import image from "../styles/bawlsPic.png";
+import image from "../../styles/bawlsPic.png";
 import Image from "next/image";
 import Link from "next/link";
 import { MetaMaskInpageProvider } from "@metamask/providers";
-import StakedNFTs from "./totalStaked";
-import OwnedStaked from "./ownedStaked";
-import NFTContractABI from "../../TezTickles.json";
+import StakedNFTs from "../totalStaked";
+import OwnedStaked from "../ownedStaked";
+import TezABI from "../../../TezTickles.json";
 
-declare global {
-  interface Window {
-    ethereum?: MetaMaskInpageProvider;
-  }
-}
-
-// Define the Header component
 const Header: React.FC = () => {
   const [contract, setContract] = useState(null);
   const [walletSigner, setWalletSigner] = useState(null);
@@ -25,7 +18,7 @@ const Header: React.FC = () => {
       if (walletSigner) {
         const testContract = new ethers.Contract(
           "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3",
-          NFTContractABI,
+          TezABI,
           walletSigner
         );
         setContract(testContract);
@@ -66,7 +59,6 @@ const Header: React.FC = () => {
           )}
           {!walletSigner?.address && (
             <button
-              id="buttonWC"
               className="connect-wallet-button"
               onClick={async () => {
                 try {
@@ -84,10 +76,6 @@ const Header: React.FC = () => {
                 } catch (error) {
                   console.error("Error connecting wallet:", error);
                 }
-                if (setWalletSigner) {
-                  document.getElementById("buttonWC").style.visibility =
-                    "hidden";
-                }
               }}
             >
               Connect Wallet
@@ -102,63 +90,4 @@ const Header: React.FC = () => {
   );
 };
 
-const Dashboard: React.FC = () => {
-  const [contractAddress, setContractAddress] = useState<string | null>(null);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-
-  const walletSigner = useState(null)[0];
-
-  useEffect(() => {
-    setContractAddress("0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3");
-    setWalletAddress(walletSigner?.address);
-  }, [walletSigner]);
-  return (
-    <div className="dashboard">
-      <div className="box box1">
-        <div className="staked-nfts">
-          <StakedNFTs />
-        </div>
-        <div className="button-container">
-          <Link href="/stakedCount"></Link>
-        </div>
-      </div>
-      <div className="box box2">
-        <div className="owned-Staked">
-          <OwnedStaked />
-        </div>
-        <div className="button-container">
-          <Link href="/ownedStaked">
-            <button className="dashboard-button">View</button>
-          </Link>
-        </div>
-      </div>
-      <div className="box box3">
-        <p>View your unstaked NFTs</p>
-        <div className="button-container">
-          <Link href="/viewUnstaked">
-            <button className="dashboard-button">View & Stake</button>
-          </Link>
-        </div>
-      </div>
-      <div className="box box4">
-        <p>Claim your BAWLS</p>
-        <div className="button-container">
-          <Link href="/bawls">
-            <button className="dashboard-button">Claim</button>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const IndexPage: NextPage = () => {
-  return (
-    <div>
-      <Header />
-      <Dashboard />
-    </div>
-  );
-};
-
-export default IndexPage;
+export default Header;
