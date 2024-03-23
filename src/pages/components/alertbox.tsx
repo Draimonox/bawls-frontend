@@ -17,3 +17,5 @@ function Demo() {
     </Alert>
   );
 }
+
+export default Demo;
