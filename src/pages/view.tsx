@@ -88,6 +88,7 @@ const NFTViewer: React.FC<{ nftContractAddress: string | undefined }> = ({
   useEffect(() => {
     const fetchUserNFTs = async () => {
       if (!walletAddress || !nftContractAddress) return;
+      console.log(walletAddress);
 
       const provider = new ethers.providers.Web3Provider(window?.ethereum);
       const nftContract = new ethers.Contract(
@@ -112,7 +113,7 @@ const NFTViewer: React.FC<{ nftContractAddress: string | undefined }> = ({
       );
 
       setUserNFTs(userNFTIds);
-      setUserNFTs(userNFTIds);
+      console.log(setUserNFTs);
     };
 
     fetchUserNFTs();

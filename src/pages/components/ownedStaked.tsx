@@ -1,77 +1,68 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import MyContractABI from "../../../stakingNFT.json";
+import NFTContractABI from "../../../TezTickles.json";
+import StakingContractABI from "../../../stakingNFT.json";
 
-interface StakedNFTProps {
-  contractAddress: string;
-  walletAddress: string;
-}
+const NFTContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
+const StakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 
-const useContract = (contractAddress: string | null) => {
-  const [contract, setContract] = useState<any>(null);
+const provider = new ethers.providers.Web3Provider(window?.ethereum);
+const signer = provider.getSigner();
 
-  useEffect(() => {
-    if (contractAddress) {
-      const provider = new ethers.BrowserProvider(window?.ethereum);
-      const instance = new ethers.Contract(
-        contractAddress,
-        MyContractABI,
-        provider
-      );
-      setContract(instance);
-    }
-  }, [contractAddress]);
+const nftContract = new ethers.Contract(
+  NFTContractAddress,
+  NFTContractABI,
+  signer
+);
+const stakingContract = new ethers.Contract(
+  StakingContractAddress,
+  StakingContractABI,
+  signer
+);
 
-  return contract;
-};
-
-const OwnedStaked: React.FC<StakedNFTProps> = ({
-  contractAddress,
-  walletAddress,
-}) => {
-  const [stakedNFTs, setStakedNFTs] = useState<string[]>([]);
-  const contract = useContract(contractAddress);
+const OwnedStakedNFTs = () => {
+  const [nftBalance, setNFTBalance] = useState(0);
+  const [ownedStakedNFTs, setOwnedStakedNFTs] = useState([]);
 
   useEffect(() => {
-    const fetchStakedNFTs = async () => {
-      try {
-        const totalStakers = await contract.getRoleMemberCount(
-          ethers.id("DEFAULT_ADMIN_ROLE")
+    const fetchData = async () => {
+      const balance = await nftContract.balanceOf(signer.getAddress());
+      setNFTBalance(balance.toNumber());
+      const tokenIds = [];
+      for (let i = 0; i < balance.toNumber(); i++) {
+        const tokenId = await nftContract.tokenOfOwnerByIndex(
+          signer.getAddress(),
+          i
         );
-        const stakedNFTs: string[] = [];
-        for (let i = 0; i < totalStakers; i++) {
-          const stakerAddress = await contract.getRoleMember(
-            ethers.id("DEFAULT_ADMIN_ROLE"),
-            i
-          );
-          if (stakerAddress === walletAddress) {
-            const { _tokensStaked } = await contract.getStakeInfo(
-              stakerAddress
-            );
-            stakedNFTs.push(..._tokensStaked);
-          }
-        }
-        setStakedNFTs(stakedNFTs);
-      } catch (error) {
-        console.error("Error fetching staked NFTs:", error);
+        tokenIds.push(tokenId.toNumber());
       }
+
+      // Check if each NFT is staked
+      const stakedNFTs = [];
+      for (const tokenId of tokenIds) {
+        const [tokensStaked, rewards] = await stakingContract.getStakeInfo(
+          tokenId
+        );
+        if (tokensStaked.length > 0) {
+          stakedNFTs.push(tokenId);
+        }
+      }
+      setOwnedStakedNFTs(stakedNFTs);
     };
 
-    if (contract) {
-      fetchStakedNFTs();
-    }
-  }, [contract, contractAddress, walletAddress]);
+    fetchData();
+  }, []);
 
   return (
     <div>
-      <h2>Staked NFTs</h2>
+      <h1>NFTs Owned & Staked: {ownedStakedNFTs.length}</h1>
       <ul>
-        {stakedNFTs.map((nft, index) => (
-          <li key={index}>{nft}</li>
+        {ownedStakedNFTs.map((tokenId) => (
+          <li key={tokenId}>{tokenId}</li>
         ))}
       </ul>
     </div>
   );
 };
 
-export default OwnedStaked;
+export default OwnedStakedNFTs;

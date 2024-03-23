@@ -121,10 +121,7 @@ const Dashboard: React.FC = () => {
       <div className="box box2">
         <p>View your staked NFTs</p>
         <div className="button-container">
-          <OwnedStaked
-            contractAddress={contractAddress}
-            walletAddress={walletAddress}
-          />
+          <OwnedStaked />
 
           <Link href="/view">
             <button className="dashboard-button">View</button>
@@ -151,7 +148,6 @@ const Dashboard: React.FC = () => {
   );
 };
 
-// Define the IndexPage component (or any other name you prefer)
 const IndexPage: NextPage = () => {
   return (
     <div>
