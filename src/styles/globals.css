@@ -82,8 +82,7 @@ header ul {
 
 .box {
   flex: 1 0 45%;
-  /* max-width: calc(49% - 10px); */
-  /* height: 40vh; Set the height of each box */
+  max-width: 100%;
   margin: 0;
   background-color: #9edfd1;
   border-radius: 25px;
@@ -95,6 +94,7 @@ header ul {
   padding: 20px;
   font-weight: bold;
   color: black;
+  box-sizing: border-box;
 }
 
 .dashboard-button {
@@ -199,18 +199,46 @@ header ul {
 
 #nftStaked {
   font-size: 100px;
+  /* margin-bottom: -100px; */
 }
 
 @media screen and (max-width: 768px) {
   .staked-nfts {
     font-size: 13px;
-    margin-left: -35px; /* Adjust margin for better visibility */
-    align-items: flex-start; /* Align items to the start */
+    margin-left: -35px;
+    align-items: flex-start;
   }
 
   #nftStaked {
     font-size: 30px;
-    margin-left: 0; /* Adjust margin for better visibility */
-    align-items: flex-start; /* Align items to the start */
+    margin-left: 0;
+    align-items: flex-start;
+  }
+}
+
+.owned-Staked {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: xx-large;
+  margin-left: -550px;
+}
+
+#ownedNftStaked {
+  font-size: 100px;
+  /* margin-bottom: -125px; */
+}
+
+@media screen and (max-width: 768px) {
+  .owned-Staked {
+    font-size: 13px;
+    margin-left: -15px;
+    align-items: flex-start;
+  }
+
+  #ownedNftStaked {
+    font-size: 30px;
+    margin-left: 0;
+    align-items: flex-start;
   }
 }

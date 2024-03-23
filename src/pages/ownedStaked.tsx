@@ -59,7 +59,9 @@ const OwnedStakedNFTs = () => {
 
   return (
     <div>
-      <h1>NFTs Owned & Staked: {ownedStakedNFTs.length}</h1>
+      <h1>NFTs Owned & Staked:</h1>
+      <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
+
       <ul>
         {ownedStakedNFTs.map((tokenId) => (
           <li key={tokenId}>{tokenId}</li>

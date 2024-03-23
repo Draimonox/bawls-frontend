@@ -119,10 +119,10 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="box box2">
-        <p>View your staked NFTs</p>
-        <div className="button-container">
+        <div className="owned-Staked">
           <OwnedStaked />
-
+        </div>
+        <div className="button-container">
           <Link href="/ownedStaked">
             <button className="dashboard-button">View</button>
           </Link>
