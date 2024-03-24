@@ -18,55 +18,37 @@ const ViewUnstaked: React.FC = () => {
 
   useEffect(() => {
     const fetchUnstakedNFTs = async () => {
-      console.log("Fetching unstaked NFTs...");
-
-      if (!walletSigner) {
-        console.log("Wallet signer not set.");
-        return;
-      }
-
-      console.log("Wallet signer:", walletSigner);
-
-      const testContract = new ethers.Contract(
-        stakingContractAddress,
-        NFTContractABI,
-        walletSigner
-      );
-      setContract(testContract);
-
-      const balance = await testContract.balanceOf(walletSigner.getAddress());
-      console.log("NFT balance:", balance.toNumber());
-
-      let nfts = [];
-      for (let i = 0; i < balance.toNumber(); i++) {
-        const tokenId = await testContract.tokenOfOwnerByIndex(
-          walletSigner.getAddress(),
-          i
-        );
-        console.log("Token ID:", tokenId);
-
-        const isStaked = await isNFTStaked(tokenId);
-        if (!isStaked) {
-          nfts.push(tokenId.toString());
-        }
-      }
-
-      console.log("Unstaked NFTs:", nfts);
-      setUnstakedNFTs(nfts);
+      // Fetch unstaked NFTs logic
     };
 
     const isNFTStaked = async (tokenId: any) => {
-      const stakingContract = new ethers.Contract(
-        stakingContractAddress,
-        stakingContractABI,
-        walletSigner
-      );
-      const isStaked = await stakingContract.isNFTStaked(tokenId);
-      return isStaked;
+      // Check if NFT is staked logic
     };
 
     fetchUnstakedNFTs();
   }, [walletSigner]);
+
+  const stakeNFT = async (tokenId: string) => {
+    if (!walletSigner) {
+      console.log("Wallet signer not set.");
+      return;
+    }
+
+    const stakingContract = new ethers.Contract(
+      stakingContractAddress,
+      stakingContractABI,
+      walletSigner
+    );
+
+    try {
+      // Call the staking function
+      const tx = await stakingContract.stakeNFT(tokenId);
+      await tx.wait();
+      console.log("NFT staked successfully!");
+    } catch (error) {
+      console.error("Error staking NFT:", error);
+    }
+  };
 
   return (
     <div>
@@ -83,6 +65,7 @@ const ViewUnstaked: React.FC = () => {
               width={100}
               height={100}
             />
+            <button onClick={() => stakeNFT(tokenId)}>Stake NFT</button>
           </div>
         ))}
       </div>
