@@ -151,7 +151,6 @@ const Dashboard: React.FC = () => {
           </Link>
         </div>
       </div>
-      {/* Add ViewUnstaked component here */}
     </div>
   );
 };
