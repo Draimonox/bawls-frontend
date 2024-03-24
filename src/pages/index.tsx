@@ -9,6 +9,8 @@ import StakedNFTs from "./totalStaked";
 import OwnedStaked from "./ownedStaked";
 import NFTContractABI from "../../TezTickles.json";
 import ViewUnstaked from "../pages/viewUnstaked";
+import ClaimBawls from "./bawls";
+import router, { useRouter } from "next/router";
 
 declare global {
   interface Window {
@@ -85,10 +87,6 @@ const Header: React.FC = () => {
                 } catch (error) {
                   console.error("Error connecting wallet:", error);
                 }
-                if (setWalletSigner) {
-                  document.getElementById("buttonWC").style.visibility =
-                    "hidden";
-                }
               }}
             >
               Connect Wallet
@@ -108,6 +106,7 @@ const Dashboard: React.FC = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
 
   const walletSigner = useState(null)[0];
+  const router = useRouter();
 
   useEffect(() => {
     setContractAddress("0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3");
@@ -144,7 +143,9 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="box box4">
-        <p>Claim your BAWLS</p>
+        <div className="claimBawls">
+          {router.pathname !== "/bawls" && <ClaimBawls />}
+        </div>
         <div className="button-container">
           <Link href="/bawls">
             <button className="dashboard-button">Claim</button>
