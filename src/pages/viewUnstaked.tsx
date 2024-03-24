@@ -1,150 +1,93 @@
-import { NextPage } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import ABI from "../.././BawlsAbi.json";
-import everything from "./";
-import image from "../styles/bawlsPic.png";
-import Image from "next/image";
-import Link from "next/link";
-
+import NFTContractABI from "../../TezTickles.json";
+import StakingContractABI from "../../stakingNFT.json";
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import Image from "next/image";
+import Header from "./components/Header";
+import router, { useRouter } from "next/router";
 
-declare global {
-  interface Window {
-    ethereum?: MetaMaskInpageProvider;
-  }
-}
+const stakingContractABI = StakingContractABI;
+const stakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 
-// Define the Header component
-const Header: React.FC = () => {
+const ViewUnstaked: React.FC = () => {
+  const router = useRouter();
   const [contract, setContract] = useState(null);
   const [walletSigner, setWalletSigner] = useState(null);
-  const [walletAddress, setWalletAddress] = useState(null); // Add state for wallet address
+  const [unstakedNFTs, setUnstakedNFTs] = useState<string[]>([]);
 
   useEffect(() => {
-    (async () => {
-      if (walletSigner) {
-        const testContract = new ethers.Contract(
-          "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3",
-          ABI,
-          walletSigner
-        );
-        setContract(testContract);
+    const fetchUnstakedNFTs = async () => {
+      console.log("Fetching unstaked NFTs...");
+
+      if (!walletSigner) {
+        console.log("Wallet signer not set.");
+        return;
       }
-    })();
+
+      console.log("Wallet signer:", walletSigner);
+
+      const testContract = new ethers.Contract(
+        stakingContractAddress,
+        NFTContractABI,
+        walletSigner
+      );
+      setContract(testContract);
+
+      const balance = await testContract.balanceOf(walletSigner.getAddress());
+      console.log("NFT balance:", balance.toNumber());
+
+      let nfts = [];
+      for (let i = 0; i < balance.toNumber(); i++) {
+        const tokenId = await testContract.tokenOfOwnerByIndex(
+          walletSigner.getAddress(),
+          i
+        );
+        console.log("Token ID:", tokenId);
+
+        const isStaked = await isNFTStaked(tokenId);
+        if (!isStaked) {
+          nfts.push(tokenId.toString());
+        }
+      }
+
+      console.log("Unstaked NFTs:", nfts);
+      setUnstakedNFTs(nfts);
+    };
+
+    const isNFTStaked = async (tokenId: any) => {
+      const stakingContract = new ethers.Contract(
+        stakingContractAddress,
+        stakingContractABI,
+        walletSigner
+      );
+      const isStaked = await stakingContract.isNFTStaked(tokenId);
+      return isStaked;
+    };
+
+    fetchUnstakedNFTs();
   }, [walletSigner]);
-  return (
-    <header>
-      <div className="header-content">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "25px",
-          }}
-        >
-          <Link href="/">
-            <Image src={image} alt="BAWLS" width={50} height={50} />
-          </Link>
-          <p
-            style={{
-              fontWeight: "bold",
-              fontSize: "14px",
-              marginTop: "5px",
-              marginLeft: "-7px",
-              color: "black",
-            }}
-          >
-            TezTickles
-          </p>
-        </div>
-        <div className="wallet-address-container">
-          {walletAddress && (
-            <p className="wallet-address">
-              Wallet: {walletAddress.slice(0, 5)}...
-              {walletAddress.slice(-5)}
-            </p>
-          )}
-          {!walletAddress && (
-            <button
-              className="connect-wallet-button"
-              onClick={async () => {
-                try {
-                  const accounts = await window?.ethereum?.request({
-                    method: "eth_requestAccounts",
-                  });
-                  await window?.ethereum?.request({
-                    method: "wallet_switchEthereumChain",
-                    params: [{ chainId: "0xa86a" }],
-                  });
-                  const provider = new ethers.BrowserProvider(window?.ethereum);
-                  const signer = await provider.getSigner();
 
-                  setWalletSigner(signer);
-                  const address = await signer.getAddress(); // Get wallet address
-                  setWalletAddress(address); // Set wallet address state
-                } catch (error) {
-                  console.error("Error connecting wallet:", error);
-                }
-              }}
-            >
-              Connect Wallet
-            </button>
-          )}
-        </div>
-      </div>
-      <div>
-        <h1></h1>
-      </div>
-    </header>
-  );
-};
-const Dashboard: React.FC = () => {
-  return (
-    <div className="dashboard">
-      <div className="box box1">
-        <p>Total Staked NFTs</p>
-        <div className="button-container">
-          <Link href="/stakedCount"></Link>
-        </div>
-      </div>
-      <div className="box box2">
-        <p>View your staked NFTs</p>
-        <div className="button-container">
-          <Link href="/view">
-            <button className="dashboard-button">View</button>
-          </Link>
-        </div>
-      </div>
-      <div className="box box3">
-        <p>View your unstaked NFTs</p>
-        <div className="button-container">
-          <Link href="/viewUnstaked">
-            <button className="dashboard-button">View & Stake</button>
-          </Link>
-        </div>
-      </div>
-      <div className="box box4">
-        <p>Claim your BAWLS</p>
-        <div className="button-container">
-          <Link href="/bawls">
-            <button className="dashboard-button">Claim</button>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Define the IndexPage component (or any other name you prefer)
-const IndexPage: NextPage = () => {
   return (
     <div>
-      <Header />
-      <Dashboard />
+      {router.pathname === "/viewUnstaked" && <Header />}
+      <h1>Unstaked NFTs:</h1>
+      <p id="unstakedNFT"> {unstakedNFTs.length}</p>
+      <div>
+        {unstakedNFTs.map((tokenId) => (
+          <div key={tokenId}>
+            {/* NFT images here */}
+            <Image
+              src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}`}
+              alt="NFT"
+              width={100}
+              height={100}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-// Export the IndexPage component as the default export
-export default IndexPage;
+export default ViewUnstaked;

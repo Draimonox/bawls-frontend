@@ -8,6 +8,7 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 import StakedNFTs from "./totalStaked";
 import OwnedStaked from "./ownedStaked";
 import NFTContractABI from "../../TezTickles.json";
+import ViewUnstaked from "../pages/viewUnstaked";
 
 declare global {
   interface Window {
@@ -133,7 +134,9 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="box box3">
-        <p>View your unstaked NFTs</p>
+        <div className="viewUnstaked">
+          <ViewUnstaked />
+        </div>
         <div className="button-container">
           <Link href="/viewUnstaked">
             <button className="dashboard-button">View & Stake</button>
@@ -148,6 +151,7 @@ const Dashboard: React.FC = () => {
           </Link>
         </div>
       </div>
+      {/* Add ViewUnstaked component here */}
     </div>
   );
 };
