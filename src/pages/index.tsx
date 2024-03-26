@@ -18,7 +18,6 @@ declare global {
   }
 }
 
-// Define the Header component
 const Header: React.FC = () => {
   const [contract, setContract] = useState(null);
   const [walletSigner, setWalletSigner] = useState(null);
