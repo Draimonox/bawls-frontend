@@ -76,10 +76,6 @@ const OwnedStakedNFTs = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    setIsIndexPage(router.pathname === "/");
-  }, [router.pathname]);
-
   const handleUnstake = async () => {
     try {
       const provider = new ethers.BrowserProvider(window?.ethereum);
@@ -96,7 +92,7 @@ const OwnedStakedNFTs = () => {
 
   return (
     <div>
-      {isIndexPage ? (
+      {router?.pathname == "/" ? (
         <div>
           <h1>NFTs Owned & Staked:</h1>
           <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
@@ -118,7 +114,7 @@ const OwnedStakedNFTs = () => {
                     height={100}
                   />
                   <p>{tokenId}</p>
-                  {!isIndexPage && (
+                  {router?.pathname !== "/" && (
                     <button onClick={handleUnstake}>Unstake NFT</button>
                   )}
                 </li>
