@@ -15,6 +15,8 @@ const OwnedStakedNFTs = () => {
   const [ownedStakedNFTs, setOwnedStakedNFTs] = useState([]);
   const [nftContract, setNFTContract] = useState(null);
   const [stakingContract, setStakingContract] = useState(null);
+  const [tokenURIs, setTokenURIs] = useState([]);
+  const [isIndexPage, setIsIndexPage] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +32,7 @@ const OwnedStakedNFTs = () => {
         setNFTContract(nftContract);
 
         const balance = await nftContract.balanceOf(await signer.getAddress());
-        setNFTBalance(balance.toNumber());
+        setNFTBalance(balance);
 
         const tokenIds = [];
         for (let i = 0; i < balance; i++) {
@@ -58,6 +60,14 @@ const OwnedStakedNFTs = () => {
           }
         }
         setOwnedStakedNFTs(stakedNFTs);
+
+        const uris = await Promise.all(
+          stakedNFTs.map(async (tokenId) => {
+            const uri = await nftContract.tokenURI(tokenId);
+            return uri;
+          })
+        );
+        setTokenURIs(uris);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -66,29 +76,57 @@ const OwnedStakedNFTs = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setIsIndexPage(router.pathname === "/");
+  }, [router.pathname]);
+
+  const handleUnstake = async () => {
+    try {
+      const provider = new ethers.BrowserProvider(window?.ethereum);
+      const signer = await provider.getSigner();
+      await stakingContract.connect(signer).unstake(ownedStakedNFTs);
+      const updatedStakedNFTs = ownedStakedNFTs.filter((tokenId) => {
+        return tokenId !== tokenId;
+      });
+      setOwnedStakedNFTs(updatedStakedNFTs);
+    } catch (error) {
+      console.error("Error unstaking NFTs:", error);
+    }
+  };
+
   return (
     <div>
-      {router.pathname === "/ownedStaked" && <Header />}
-      <div>
-        <h1>NFTs Owned & Staked:</h1>
-        <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
-        <ul>
-          {ownedStakedNFTs.map(async (tokenId) => {
-            const tokenURI = await nftContract?.tokenURI(tokenId);
-            return (
-              <li key={tokenId}>
-                <Image
-                  src={tokenURI}
-                  alt={`NFT ${tokenId}`}
-                  width={100}
-                  height={100}
-                />
-                <p>{tokenId}</p>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      {isIndexPage ? (
+        <div>
+          <h1>NFTs Owned & Staked:</h1>
+          <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
+        </div>
+      ) : (
+        <>
+          <Header />
+          <div>
+            <p id="ownedNftStaked">
+              Number of staked NFTs: {ownedStakedNFTs.length}
+            </p>
+            <ul>
+              {ownedStakedNFTs.map((tokenId, index) => (
+                <li key={tokenId}>
+                  <Image
+                    src={tokenURIs[index]}
+                    alt={`NFT ${tokenId}`}
+                    width={100}
+                    height={100}
+                  />
+                  <p>{tokenId}</p>
+                  {!isIndexPage && (
+                    <button onClick={handleUnstake}>Unstake NFT</button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 };
