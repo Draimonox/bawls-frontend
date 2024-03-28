@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/carousel": "^7.7.0",
     "@mantine/core": "^7.7.0",
     "@mantine/hooks": "^7.7.0",
     "@mantinex/mantine-logo": "^1.0.1",
     "@metamask/providers": "^16.0.0",
     "@tabler/icons-react": "^3.1.0",
+    "embla-carousel-react": "7.1.0",
     "ethers": "^6.11.1",
     "next": "14.1.4",
     "react": "^18",
