@@ -27,14 +27,12 @@ const ViewUnstaked: React.FC = () => {
 
   useEffect(() => {
     async function getWalletSigner() {
-      if (!walletSigner) {
-        try {
-          const provider = new ethers.BrowserProvider(window?.ethereum);
-          const signer = await provider.getSigner();
-          setWalletSigner(signer);
-        } catch (error) {
-          console.error("Error getting wallet signer:", error);
-        }
+      try {
+        const provider = new ethers.BrowserProvider(window?.ethereum);
+        const signer = await provider.getSigner();
+        setWalletSigner(signer);
+      } catch (error) {
+        console.error("Error getting wallet signer:", error);
       }
     }
 
