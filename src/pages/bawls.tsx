@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import StakingContractABI from "../../stakingNFT.json";
 import { useRouter } from "next/router";
+import Header from "./components/Header";
 
 // const provider = new ethers.BrowserProvider(window?.ethereum);
 

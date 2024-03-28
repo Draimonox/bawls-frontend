@@ -136,7 +136,7 @@ header ul {
 }
 
 .dashboard-button:active {
-  background-color: #3d94cf;
+  background-color: rgb(255, 0, 0);
   transition: all 0.25s;
   -webkit-transition: all 0.25s;
   box-shadow: none;
@@ -169,7 +169,7 @@ header ul {
 }
 
 .connect-wallet-button:active {
-  background-color: #3d94cf;
+  background-color: #ff0000;
   box-shadow: none;
   transform: scale(0.98);
 }
@@ -308,7 +308,7 @@ header ul {
 }
 
 #Claim-Rewards:active {
-  background-color: #3d94cf;
+  background-color: #ff0000;
   transition: all 0.25s;
   -webkit-transition: all 0.25s;
   box-shadow: none;
@@ -379,6 +379,94 @@ header ul {
   }
 }
 
+.stakeButton {
+  padding: 6.25px 15px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #c91c68;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  cursor: pointer;
+  margin-bottom: 100px;
+}
+
+.stakeButton:hover {
+  background-color: #cd5389;
+  box-shadow: 0 0 20px #930b47;
+  transform: scale(1.1);
+}
+
+.stakeButton:active {
+  background-color: #ff0000;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+#leftArrow {
+  margin-bottom: -25px;
+}
+
+#rightArrow {
+  margin-bottom: -25px;
+}
+
 .bawls-id {
-  margin-left: 165px;
+  font-weight: 1000;
+  font-style: italic;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: larger;
+}
+
+.unstakedNFTS {
+  font-size: xx-large;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-align: center;
+  font-weight: bold;
+}
+
+.disconnect-wallet-button {
+  background-color: transparent;
+  white-space: nowrap;
+  font-weight: bold;
+  color: black;
+  padding: 12.5px 30px;
+  border: 0;
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: 40px;
+  right: 20px;
+}
+
+.disconnect-wallet-button {
+  padding: 4.25px 10px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #c91c68;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  cursor: pointer;
+  position: absolute;
+  top: 45px;
+  right: 50px;
+}
+
+.disconnect-wallet-button:hover {
+  background-color: #cd5389;
+  box-shadow: 0 0 20px #930b47;
+  transform: scale(1.1);
+}
+.disconnect-wallet-button:active {
+  background-color: #ff0000;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
 }

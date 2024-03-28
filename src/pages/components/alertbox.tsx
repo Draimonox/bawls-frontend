@@ -1,7 +1,7 @@
 import { Alert } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
 
-function Demo() {
+function alertBox(title: string, body: string) {
   const icon = <IconInfoCircle />;
   return (
     <Alert
@@ -9,13 +9,12 @@ function Demo() {
       color="blue"
       radius="xl"
       withCloseButton
-      title="Alert title"
+      title={title}
       icon={icon}
     >
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. At officiis,
-      quae tempore necessitatibus placeat saepe.
+      {body}
     </Alert>
   );
 }
 
-export default Demo;
+export default alertBox;
