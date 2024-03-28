@@ -15,6 +15,10 @@ const Header: React.FC = () => {
         const provider = new ethers.BrowserProvider(window?.ethereum);
         try {
           const signer = await provider.getSigner();
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0xa86a" }], // Switch to Avalanche C-Chain
+          });
           setWalletSigner(signer);
         } catch (error) {
           console.error("Error loading wallet signer:", error);
@@ -40,6 +44,20 @@ const Header: React.FC = () => {
         setWalletSigner(signer);
         const address = await signer.getAddress();
         localStorage.setItem("walletAddress", address);
+
+        const networkId = await provider
+          .getNetwork()
+          .then((network) => network.chainId);
+
+        if (networkId.toString() !== "43114") {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0xa86a" }], // Switch to Avalanche C-Chain
+          });
+
+          // Reload the page to reflect the network change
+          window.location.reload();
+        }
       } catch (error) {
         console.error("Error connecting wallet:", error);
       }
@@ -47,6 +65,32 @@ const Header: React.FC = () => {
       console.error("MetaMask not detected.");
     }
   };
+
+  const switchToAvalanche = async () => {
+    try {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [
+          {
+            chainId: "0xa86a",
+            chainName: "Avalanche C-Chain",
+            nativeCurrency: {
+              name: "AVAX",
+              symbol: "AVAX",
+              decimals: 18,
+            },
+            rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+            blockExplorerUrls: ["https://cchain.explorer.avax.network/"],
+          },
+        ],
+      });
+    } catch (error) {
+      console.error("Error switching chain:", error);
+    }
+  };
+
+  // Call switchChain method here if you want it to run on component mount
+  // switchChain(1); // Example of switching to Mainnet (chainId 1)
 
   return (
     <header>
