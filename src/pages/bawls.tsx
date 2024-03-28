@@ -1,14 +1,14 @@
+// Import necessary dependencies and components
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { MetaMaskInpageProvider } from "@metamask/providers";
-import StakingContractABI from "../../stakingNFT.json";
 import { useRouter } from "next/router";
 import Header from "./components/Header";
 
-// const provider = new ethers.BrowserProvider(window?.ethereum);
-
+// Define staking contract address and ABI
 const stakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
+const StakingContractABI = []; // Your staking contract ABI
 
+// Define the component
 const ClaimBawls: React.FC = () => {
   const [walletSigner, setWalletSigner] = useState<any>(null);
   const [rewardTokenBalance, setRewardTokenBalance] = useState<number>(0);
@@ -16,6 +16,7 @@ const ClaimBawls: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  // UseEffect to fetch reward token balance
   useEffect(() => {
     const fetchRewardTokenBalance = async () => {
       if (!walletSigner) return;
@@ -33,6 +34,7 @@ const ClaimBawls: React.FC = () => {
     fetchRewardTokenBalance();
   }, [walletSigner]);
 
+  // Function to handle claiming rewards
   const handleClaimRewards = async () => {
     if (!walletSigner) return;
 
@@ -57,19 +59,14 @@ const ClaimBawls: React.FC = () => {
     }
   };
 
+  // Render content based on current route
   return (
-    <div>
-      {router.pathname !== "/bawls" && (
-        <>
-          <h1>Your Unclaimed BAWLS:</h1>
-          <p id="rewardBalance">{rewardTokenBalance}</p>
-        </>
-      )}
-
-      {router.pathname === "/bawls" && (
-        <>
-          <h1>Your Unclaimed BAWLS:</h1>
-          <p>{rewardTokenBalance}</p>
+    <>
+      {router.pathname === "/bawls" && <Header />}
+      <div>
+        <h1>Your Unclaimed BAWLS:</h1>
+        <p id="rewardBalance">{rewardTokenBalance}</p>
+        {router.pathname === "/bawls" && (
           <button
             id="Claim-Rewards"
             onClick={handleClaimRewards}
@@ -77,10 +74,10 @@ const ClaimBawls: React.FC = () => {
           >
             {claiming ? "Claiming..." : "Claim Rewards"}
           </button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-        </>
-      )}
-    </div>
+        )}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
+    </>
   );
 };
 

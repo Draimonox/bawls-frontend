@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import image from "../styles/bawlsPic.png";
 import Image from "next/image";
 import Link from "next/link";
 import { MetaMaskInpageProvider } from "@metamask/providers";

@@ -11,7 +11,6 @@ import "@mantine/carousel/styles.css";
 import { Carousel } from "@mantine/carousel";
 import { Button, Center, Title, LoadingOverlay, Box } from "@mantine/core";
 import { useAsync } from "react-use";
-import alertBox from "./components/alertbox";
 import Loader from "../pages/components/loader";
 import { toast } from "react-toastify";
 
