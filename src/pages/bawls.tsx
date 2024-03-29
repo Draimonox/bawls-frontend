@@ -64,7 +64,7 @@ const ClaimBawls: React.FC = () => {
     <>
       {router.pathname === "/bawls" && <Header />}
       <div>
-        <h1>Your Unclaimed BAWLS:</h1>
+        <h1>Your Unclaimed BAWLS</h1>
         <p id="rewardBalance">{rewardTokenBalance}</p>
         {router.pathname === "/bawls" && (
           <button

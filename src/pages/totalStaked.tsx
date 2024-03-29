@@ -43,7 +43,7 @@ const StakedNFTs: React.FC = () => {
 
   return (
     <div>
-      <h2>Total NFTs Staked:</h2>
+      <h2>Total NFTs Staked</h2>
       <p id="nftStaked">{totalStakedNFTs}</p>
     </div>
   );

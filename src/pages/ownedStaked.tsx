@@ -97,7 +97,7 @@ const OwnedStakedNFTs = () => {
     <div>
       {router?.pathname == "/" ? (
         <div>
-          <h1>NFTs Owned & Staked:</h1>
+          <h1>NFTs Owned & Staked</h1>
           <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
         </div>
       ) : (

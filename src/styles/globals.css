@@ -380,8 +380,7 @@ header ul {
 }
 
 .stakeButton {
-  margin-bottom: 100px !important;
-  padding: 6.25px 15px;
+  padding: 2.5px 7.5px;
   border: 0;
   border-radius: 100px;
   background-color: #c91c68;
@@ -423,26 +422,38 @@ header ul {
 
 .unstakedNFT {
   font-size: xx-large;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
-  text-align: center;
-  font-weight: bold;
+  margin-left: 75px;
 }
 
-.unstakedNFTS {
+.unstakedNFTNumber {
   text-align: center;
   font-weight: bold;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  font-size: xx-large;
+  font-size: 100px;
+  margin-left: -175px;
 }
 
 @media screen and (max-width: 912px) and (max-height: 1368px),
   screen and (max-width: 1368px) and (max-height: 912px) {
-  .unstakedNFTS {
-    font-size: 13px !important;
+  .unstakedNFTNumber {
+    font-size: 30px !important;
+    margin-left: -65px;
   }
   .unstakedNFT {
-    font-size: 30px !important;
+    font-size: 15px !important;
+    margin-left: 40px;
   }
+}
+
+/* .unstakedNFTsContainer {
+  flex-direction: row !important;
+} */
+
+.unstakedNFTS {
+  font-size: xx-large;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-align: center;
+  font-weight: bold;
 }
