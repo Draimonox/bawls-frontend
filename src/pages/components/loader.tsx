@@ -13,7 +13,6 @@ const Loader = ({
   isLoading: boolean;
 }) => {
   //   const [showLoader, setShowLoader] = useState(isLoading);
-  console.log(isLoading);
   return (
     <Flex
       mih={50}

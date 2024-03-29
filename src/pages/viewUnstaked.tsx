@@ -23,6 +23,7 @@ const ViewUnstaked: React.FC = () => {
   const [walletSigner, setWalletSigner] = useState<any>(null);
   const [unstakedNFTs, setUnstakedNFTs] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isApproved, setIsApproved] = useState<boolean>(false);
 
   useEffect(() => {
     async function getWalletSigner() {
@@ -72,6 +73,67 @@ const ViewUnstaked: React.FC = () => {
     fetchUnstakedNFTs();
   }, [walletSigner]);
 
+  useEffect(() => {
+    if (!walletSigner) return;
+
+    const checkApprovalStatus = async () => {
+      try {
+        const nftContract = new ethers.Contract(
+          nftContractAddress,
+          NFTContractABI,
+          walletSigner
+        );
+
+        const approvalStatus = await nftContract.getApproved(
+          walletSigner.getAddress(),
+          stakingContractAddress
+        );
+
+        setIsApproved(approvalStatus);
+      } catch (error) {
+        console.error("Error checking approval status:", error);
+      }
+    };
+
+    checkApprovalStatus();
+  }, [walletSigner]);
+
+  const approveNFTs = async () => {
+    try {
+      if (!walletSigner) {
+        console.log("Wallet signer not set.");
+        toast.warn("Wallet Signer Not Set.");
+        return;
+      }
+
+      const nftContract = new ethers.Contract(
+        nftContractAddress,
+        NFTContractABI,
+        walletSigner
+      );
+
+      console.log("Approving NFTs for staking contract...");
+      const tx = await nftContract.setApprovalForAll(
+        stakingContractAddress,
+        true
+      );
+      console.log("Transaction hash:", tx.hash);
+      await tx.wait();
+      console.log("NFTs approved successfully!");
+      toast.success("NFTs Approved Successfully!");
+      setIsApproved(true);
+    } catch (error) {
+      console.error("Error approving NFTs:", error);
+      if (error.code === 4001) {
+        console.log("User rejected the transaction");
+        toast.warn("Transaction rejected by user");
+      } else if (error.data) {
+        console.error("Error data:", error.data.message);
+        toast.error("Error approving NFTs, please try again.");
+      }
+    }
+  };
+
   const stakeNFT = async (tokenId: string) => {
     try {
       if (!walletSigner) {
@@ -80,21 +142,49 @@ const ViewUnstaked: React.FC = () => {
         return;
       }
 
+      const nftContract = new ethers.Contract(
+        nftContractAddress,
+        NFTContractABI,
+        walletSigner
+      );
+
+      console.log("Checking Approval...");
+      let tx = await nftContract.getApproved(tokenId);
+      console.log(tx);
+      let approvalStatus = false;
+      if (tx == "0x0000000000000000000000000000000000000000") {
+        console.log("Approval Needed");
+      } else if (stakingContractAddress == tx) {
+        approvalStatus = true;
+        console.log("No approve needed");
+      }
+
+      if (approvalStatus == false) {
+        let tx = await nftContract.approve(stakingContractAddress, tokenId);
+        console.log("Transaction hash:", tx.hash);
+        await tx.wait();
+      }
+
+      // Add a delay of 1 second
+      await new Promise((resolve) => setTimeout(resolve, 100));
       const stakingContract = new ethers.Contract(
         stakingContractAddress,
         stakingContractABI,
         walletSigner
       );
-
+      tx = {};
       console.log("Staking NFT with tokenId:", tokenId);
-      const tx = await stakingContract.stake([tokenId]);
+      tx = await stakingContract.stake([tokenId]);
       console.log("Transaction hash:", tx.hash);
       await tx.wait();
       console.log("NFT staked successfully!");
       toast.success("NFT Staked Successfully!");
     } catch (error) {
       console.error("Error staking NFT:", error);
-      if (error.data) {
+      if (error.code === 4001) {
+        console.log("User rejected the transaction");
+        toast.warn("Transaction rejected by user");
+      } else if (error.data) {
         console.error("Error data:", error.data.message);
         toast.error("Error, Staking NFT did not work, please try again.");
       }
@@ -131,16 +221,17 @@ const ViewUnstaked: React.FC = () => {
                       height: 30,
                     },
                   }}
-                  px={20}
+                  px={0}
                   className="carousel-indicator"
                   w="fit-content"
                   style={{
-                    border: "1px solid black",
+                    border: "2px solid black",
                     borderRadius: 10,
                     margin: "100px",
+                    maxWidth: "402.5px", // Change the margin here
                   }}
+                  slideGap={-1}
                   loop
-                  slideGap="xs"
                   withIndicators
                   withControls
                   controlsOffset="xs"
@@ -152,11 +243,11 @@ const ViewUnstaked: React.FC = () => {
                       width="44"
                       height="44"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="#2c3e50"
                       fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path
@@ -184,11 +275,11 @@ const ViewUnstaked: React.FC = () => {
                       width="44"
                       height="44"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="#2c3e50"
                       fill="none"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                       <path

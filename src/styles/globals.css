@@ -380,6 +380,7 @@ header ul {
 }
 
 .stakeButton {
+  margin-bottom: 100px !important;
   padding: 6.25px 15px;
   border: 0;
   border-radius: 100px;
@@ -389,7 +390,6 @@ header ul {
   transition: all 0.25s;
   -webkit-transition: all 0.25s;
   cursor: pointer;
-  margin-bottom: 100px;
 }
 
 .stakeButton:hover {
@@ -421,10 +421,28 @@ header ul {
   font-size: larger;
 }
 
-.unstakedNFTS {
+.unstakedNFT {
   font-size: xx-large;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   text-align: center;
   font-weight: bold;
+}
+
+.unstakedNFTS {
+  text-align: center;
+  font-weight: bold;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: xx-large;
+}
+
+@media screen and (max-width: 912px) and (max-height: 1368px),
+  screen and (max-width: 1368px) and (max-height: 912px) {
+  .unstakedNFTS {
+    font-size: 13px !important;
+  }
+  .unstakedNFT {
+    font-size: 30px !important;
+  }
 }

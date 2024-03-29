@@ -5,6 +5,8 @@ import NFTContractABI from "../../TezTickles.json";
 import StakingContractABI from "../../stakingNFT.json";
 import Header from "./components/Header";
 import Image from "next/image";
+import { Center, Title, Box, Button } from "@mantine/core";
+import { Carousel } from "@mantine/carousel";
 
 const NFTContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
 const StakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
@@ -40,7 +42,7 @@ const OwnedStakedNFTs = () => {
             await signer.getAddress(),
             i
           );
-          tokenIds.push(tokenId.toNumber());
+          tokenIds.push(tokenId);
         }
 
         const stakingContract = new ethers.Contract(
@@ -55,6 +57,7 @@ const OwnedStakedNFTs = () => {
           const [tokensStaked, rewards] = await stakingContract.getStakeInfo(
             tokenId
           );
+          console.log(tokenId);
           if (tokensStaked.length > 0) {
             stakedNFTs.push(tokenId);
           }
@@ -76,7 +79,7 @@ const OwnedStakedNFTs = () => {
     fetchData();
   }, []);
 
-  const handleUnstake = async () => {
+  const handleUnstake = async (tokenId) => {
     try {
       const provider = new ethers.BrowserProvider(window?.ethereum);
       const signer = await provider.getSigner();
@@ -104,22 +107,37 @@ const OwnedStakedNFTs = () => {
             <p id="ownedNftStaked">
               Number of staked NFTs: {ownedStakedNFTs.length}
             </p>
-            <ul>
+            <Carousel
+              styles={{
+                controls: {
+                  left: 0,
+                  right: 0,
+                  margin: "0 auto",
+                  position: "absolute",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                },
+              }}
+            >
               {ownedStakedNFTs.map((tokenId, index) => (
-                <li key={tokenId}>
-                  <Image
-                    src={tokenURIs[index]}
-                    alt={`NFT ${tokenId}`}
-                    width={100}
-                    height={100}
-                  />
-                  <p>{tokenId}</p>
-                  {router?.pathname !== "/" && (
-                    <button onClick={handleUnstake}>Unstake NFT</button>
-                  )}
-                </li>
+                <Carousel.Slide key={tokenId}>
+                  <Center
+                    style={{ flexDirection: "column", textAlign: "center" }}
+                  >
+                    <Image
+                      src={tokenURIs[index]}
+                      alt={`NFT ${tokenId}`}
+                      width={200}
+                      height={200}
+                    />
+                    <Title>{`NFT ID: ${tokenId}`}</Title>
+                    <button onClick={() => handleUnstake(tokenId)}>
+                      Unstake NFT
+                    </button>
+                  </Center>
+                </Carousel.Slide>
               ))}
-            </ul>
+            </Carousel>
           </div>
         </>
       )}
