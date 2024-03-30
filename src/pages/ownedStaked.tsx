@@ -5,139 +5,149 @@ import NFTContractABI from "../../TezTickles.json";
 import StakingContractABI from "../../stakingNFT.json";
 import Header from "./components/Header";
 import Image from "next/image";
-import { Center, Title, Box, Button } from "@mantine/core";
+import { Center, Title, Button } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 
 const NFTContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
 const StakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 
-const OwnedStakedNFTs = () => {
+const ViewStaked = () => {
   const router = useRouter();
-  const [nftBalance, setNFTBalance] = useState(0);
   const [ownedStakedNFTs, setOwnedStakedNFTs] = useState([]);
-  const [nftContract, setNFTContract] = useState(null);
-  const [stakingContract, setStakingContract] = useState(null);
   const [tokenURIs, setTokenURIs] = useState([]);
-  const [isIndexPage, setIsIndexPage] = useState(false);
+  const [walletSigner, setWalletSigner] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function getWalletSigner() {
       try {
         const provider = new ethers.BrowserProvider(window?.ethereum);
-        await provider.send("eth_requestAccounts", []);
         const signer = await provider.getSigner();
-        const nftContract = new ethers.Contract(
-          NFTContractAddress,
-          NFTContractABI,
-          signer
-        );
-        setNFTContract(nftContract);
+        setWalletSigner(signer);
+      } catch (error) {
+        console.error("Error getting wallet signer:", error);
+      }
+    }
+    getWalletSigner();
+  }, []);
 
-        const balance = await nftContract.balanceOf(await signer.getAddress());
-        setNFTBalance(balance);
-
-        const tokenIds = [];
-        for (let i = 0; i < balance; i++) {
-          const tokenId = await nftContract.tokenOfOwnerByIndex(
-            await signer.getAddress(),
-            i
-          );
-          tokenIds.push(tokenId);
-        }
-
+  useEffect(() => {
+    if (!walletSigner) return;
+    const fetchOwnedStakedNFTs = async () => {
+      try {
         const stakingContract = new ethers.Contract(
           StakingContractAddress,
           StakingContractABI,
-          signer
+          walletSigner
         );
-        setStakingContract(stakingContract);
-
-        const stakedNFTs = [];
-        for (const tokenId of tokenIds) {
-          const [tokensStaked, rewards] = await stakingContract.getStakeInfo(
-            tokenId
-          );
-          console.log(tokenId);
-          if (tokensStaked.length > 0) {
-            stakedNFTs.push(tokenId);
-          }
-        }
-        setOwnedStakedNFTs(stakedNFTs);
-
-        const uris = await Promise.all(
+        const stakerInfo = await stakingContract.getStakeInfo(
+          walletSigner.getAddress()
+        );
+        const stakedNFTs = stakerInfo[0].map((tokenId) => tokenId.toString());
+        const nftContract = new ethers.Contract(
+          NFTContractAddress,
+          NFTContractABI,
+          walletSigner
+        );
+        const tokenURIs = await Promise.all(
           stakedNFTs.map(async (tokenId) => {
-            const uri = await nftContract.tokenURI(tokenId);
-            return uri;
+            const tokenURI = await nftContract.tokenURI(tokenId);
+            if (tokenURI) {
+              return tokenURI;
+            } else {
+              console.error(`Token URI is undefined for token ID: ${tokenId}`);
+              return null;
+            }
           })
         );
-        setTokenURIs(uris);
+        setOwnedStakedNFTs(stakedNFTs);
+        setTokenURIs(tokenURIs);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching owned and staked NFTs:", error);
       }
     };
+    fetchOwnedStakedNFTs();
+  }, [walletSigner]);
 
-    fetchData();
-  }, []);
-
-  const handleUnstake = async (tokenId) => {
+  async function handleUnstake(tokenId) {
     try {
-      const provider = new ethers.BrowserProvider(window?.ethereum);
-      const signer = await provider.getSigner();
-      await stakingContract.connect(signer).unstake(ownedStakedNFTs);
-      const updatedStakedNFTs = ownedStakedNFTs.filter((tokenId) => {
-        return tokenId !== tokenId;
-      });
-      setOwnedStakedNFTs(updatedStakedNFTs);
+      const stakingContract = new ethers.Contract(
+        StakingContractAddress,
+        StakingContractABI,
+        walletSigner
+      );
+      const tx = await stakingContract.withdraw(tokenId);
+      await tx.wait();
+      console.log("NFT unstaked successfully");
+
+      // Fetch the updated list of owned and staked NFTs
+      const stakerInfo = await stakingContract.getStakeInfo(
+        walletSigner.getAddress()
+      );
+      const stakedNFTs = stakerInfo.map((info) => info.tokenId.toString());
+      const nftContract = new ethers.Contract(
+        NFTContractAddress,
+        NFTContractABI,
+        walletSigner
+      );
+      const tokenURIs = await Promise.all(
+        stakedNFTs.map(async (tokenId) => {
+          return await nftContract.tokenURI(tokenId);
+        })
+      );
+      setOwnedStakedNFTs(stakedNFTs);
+      setTokenURIs(tokenURIs);
     } catch (error) {
-      console.error("Error unstaking NFTs:", error);
+      console.error("Error unstaking NFT:", error);
     }
-  };
+  }
 
   return (
     <div>
       {router?.pathname == "/" ? (
         <div>
-          <h1>NFTs Owned & Staked</h1>
+          <h1 className="stakedNFT">NFTs Owned & Staked</h1>
           <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
         </div>
       ) : (
         <>
+          {router.pathname === "/viewUnstaked" && (
+            <>
+              <Header />
+            </>
+          )}
           <Header />
-          <div>
-            <p id="ownedNftStaked">
-              Number of staked NFTs: {ownedStakedNFTs.length}
-            </p>
-            <Carousel
-              styles={{
-                controls: {
-                  left: 0,
-                  right: 0,
-                  margin: "0 auto",
-                  position: "absolute",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                },
-              }}
-            >
-              {ownedStakedNFTs.map((tokenId, index) => (
-                <Carousel.Slide key={tokenId}>
-                  <Center
-                    style={{ flexDirection: "column", textAlign: "center" }}
-                  >
-                    <Image
-                      src={tokenURIs[index]}
-                      alt={`NFT ${tokenId}`}
-                      width={200}
-                      height={200}
-                    />
-                    <Title>{`NFT ID: ${tokenId}`}</Title>
-                    <button onClick={() => handleUnstake(tokenId)}>
-                      Unstake NFT
-                    </button>
-                  </Center>
-                </Carousel.Slide>
-              ))}
-            </Carousel>
+          <h1 className="unstakedNFTS">Staked & Owned NFTs</h1>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+              gap: "20px",
+              padding: "20px",
+            }}
+          >
+            {ownedStakedNFTs.map((tokenId, index) => (
+              <div
+                key={tokenId}
+                style={{
+                  border: "2px solid black",
+                  borderRadius: "10px",
+                  padding: "10px",
+                }}
+              >
+                <Image
+                  src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
+                  alt={`NFT ${tokenId}`}
+                  width={200}
+                  height={200}
+                />
+                <Title>{`NFT ID: ${tokenId}`}</Title>
+                <Button onClick={() => handleUnstake(tokenId)}>
+                  Unstake NFT
+                </Button>
+              </div>
+            ))}
           </div>
         </>
       )}
@@ -145,4 +155,4 @@ const OwnedStakedNFTs = () => {
   );
 };
 
-export default OwnedStakedNFTs;
+export default ViewStaked;

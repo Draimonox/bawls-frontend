@@ -132,6 +132,7 @@ const ViewUnstaked: React.FC = () => {
         toast.error("Error approving NFTs, please try again.");
       }
     }
+    approveNFTs();
   };
 
   const stakeNFT = async (tokenId: string) => {
@@ -198,7 +199,7 @@ const ViewUnstaked: React.FC = () => {
       {router.pathname === "/viewUnstaked" && (
         <>
           <Header />
-          <h1 className="unstakedNFTS">Unstaked NFTs:</h1>
+          <h1 className="unstakedNFTS">Unstaked NFTs</h1>
         </>
       )}
       {router.pathname === "/" ? (
