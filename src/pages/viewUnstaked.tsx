@@ -247,7 +247,9 @@ const ViewUnstaked: React.FC = () => {
                           marginBottom: "10px",
                         }}
                       />
-                      <p style={{ marginBottom: "10px" }}>NFT ID: {tokenId}</p>
+                      <p className="NFTID" style={{ marginBottom: "10px" }}>
+                        NFT ID: {tokenId}
+                      </p>
                       <button
                         className="stakeButton"
                         onClick={() => stakeNFT(tokenId)}

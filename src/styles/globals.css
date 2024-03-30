@@ -457,3 +457,35 @@ header ul {
   text-align: center;
   font-weight: bold;
 }
+
+.unstakeButton {
+  padding: 2.5px 7.5px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #c91c68;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  cursor: pointer;
+}
+
+.unstakeButton:hover {
+  background-color: #cd5389;
+  box-shadow: 0 0 20px #930b47;
+  transform: scale(1.1);
+}
+
+.unstakeButton:active {
+  background-color: #ff0000;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  box-shadow: none;
+  transform: scale(0.98);
+}
+
+.NFTID {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: 17px;
+}

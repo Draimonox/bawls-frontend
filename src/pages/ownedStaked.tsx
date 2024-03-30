@@ -112,7 +112,7 @@ const ViewStaked = () => {
         </div>
       ) : (
         <>
-          {router.pathname === "/viewUnstaked" && (
+          {router.pathname === "/" && (
             <>
               <Header />
             </>
@@ -134,16 +134,32 @@ const ViewStaked = () => {
                   border: "2px solid black",
                   borderRadius: "10px",
                   padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center", // Center items horizontally
                 }}
               >
                 <Image
                   src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
-                  alt={`NFT ${tokenId}`}
-                  width={200}
-                  height={200}
+                  alt="NFT"
+                  width={200} // Add a width property here
+                  height={200} // Add a height property here
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "10px",
+                    marginBottom: "10px",
+                  }}
                 />
-                <Title>{`NFT ID: ${tokenId}`}</Title>
-                <Button onClick={() => handleUnstake(tokenId)}>
+                <Title
+                  className="NFTID"
+                  style={{ marginBottom: "10px" }}
+                >{`NFT ID: ${tokenId}`}</Title>
+                <Button
+                  className="unstakeButton"
+                  onClick={() => handleUnstake(tokenId)}
+                  style={{ alignSelf: "center" }} // Center the button
+                >
                   Unstake NFT
                 </Button>
               </div>
