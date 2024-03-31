@@ -77,7 +77,7 @@ const ViewStaked = () => {
         StakingContractABI,
         walletSigner
       );
-      const tx = await stakingContract.withdraw(tokenId);
+      const tx = await stakingContract.withdraw([tokenId]);
       await tx.wait();
       console.log("NFT unstaked successfully");
 
