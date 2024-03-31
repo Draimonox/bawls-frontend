@@ -90,9 +90,7 @@ const ViewUnstaked: React.FC = () => {
         );
 
         setIsApproved(approvalStatus);
-      } catch (error) {
-        console.error("Error checking approval status:", error);
-      }
+      } catch (error) {}
     };
 
     checkApprovalStatus();
