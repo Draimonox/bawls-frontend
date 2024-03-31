@@ -250,7 +250,12 @@ const ViewUnstaked: React.FC = () => {
                       </p>
                       <button
                         className="stakeButton"
-                        onClick={() => stakeNFT(tokenId)}
+                        onClick={() => {
+                          stakeNFT(tokenId);
+                          toast.warn(
+                            "Please wait for transaction to be prompted"
+                          );
+                        }}
                       >
                         Stake NFT
                       </button>
