@@ -487,3 +487,15 @@ header ul {
   font-weight: bold;
   font-size: 17px;
 }
+
+.noNftStaked {
+  text-align: center !important;
+  font-size: 23px;
+  font-weight: bold;
+}
+
+.noNFTS {
+  font-size: 23px;
+  font-weight: bold;
+  text-align: center !important;
+}

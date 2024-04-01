@@ -102,7 +102,6 @@ const ViewStaked = () => {
       console.error("Error unstaking NFT:", error);
     }
   }
-
   return (
     <div>
       {router?.pathname == "/" ? (
@@ -127,43 +126,49 @@ const ViewStaked = () => {
               padding: "20px",
             }}
           >
-            {ownedStakedNFTs.map((tokenId, index) => (
-              <div
-                key={tokenId}
-                style={{
-                  border: "2px solid black",
-                  borderRadius: "10px",
-                  padding: "10px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center", // Center items horizontally
-                }}
-              >
-                <Image
-                  src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
-                  alt="NFT"
-                  width={200} // Add a width property here
-                  height={200} // Add a height property here
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "10px",
-                    marginBottom: "10px",
-                  }}
-                />
-                <Title
-                  className="NFTID"
-                  style={{ marginBottom: "10px" }}
-                >{`NFT ID: ${tokenId}`}</Title>
-                <Button
-                  className="unstakeButton"
-                  onClick={() => handleUnstake(tokenId)}
-                  style={{ alignSelf: "center" }} // Center the button
-                >
-                  Unstake NFT
-                </Button>
+            {ownedStakedNFTs.length === 0 ? (
+              <div>
+                <p className="noNftStaked">No NFTs staked</p>
               </div>
-            ))}
+            ) : (
+              ownedStakedNFTs.map((tokenId, index) => (
+                <div
+                  key={tokenId}
+                  style={{
+                    border: "2px solid black",
+                    borderRadius: "10px",
+                    padding: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center", // Center items horizontally
+                  }}
+                >
+                  <Image
+                    src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
+                    alt="NFT"
+                    width={200} // Add a width property here
+                    height={200} // Add a height property here
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: "10px",
+                      marginBottom: "10px",
+                    }}
+                  />
+                  <Title
+                    className="NFTID"
+                    style={{ marginBottom: "10px" }}
+                  >{`NFT ID: ${tokenId}`}</Title>
+                  <Button
+                    className="unstakeButton"
+                    onClick={() => handleUnstake(tokenId)}
+                    style={{ alignSelf: "center" }} // Center the button
+                  >
+                    Unstake NFT
+                  </Button>
+                </div>
+              ))
+            )}
           </div>
         </>
       )}

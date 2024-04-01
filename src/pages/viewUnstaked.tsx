@@ -212,7 +212,7 @@ const ViewUnstaked: React.FC = () => {
           ) : (
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {unstakedNFTs.length === 0 ? (
-                <p>User does not own NFTs</p>
+                <p className="noNFTS">User does not own NFTs</p>
               ) : (
                 <div
                   style={{
@@ -253,7 +253,7 @@ const ViewUnstaked: React.FC = () => {
                         onClick={() => {
                           stakeNFT(tokenId);
                           toast.warn(
-                            "Please wait for transaction to be prompted"
+                            "Please wait for transaction to be prompted after approval"
                           );
                         }}
                       >
