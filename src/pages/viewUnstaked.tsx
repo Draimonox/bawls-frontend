@@ -210,34 +210,49 @@ const ViewUnstaked: React.FC = () => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <div>
               {unstakedNFTs.length === 0 ? (
-                <p className="noNFTS">User does not own NFTs</p>
-              ) : (
                 <div
                   style={{
                     display: "flex",
-                    flexWrap: "wrap",
                     justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    className="noNftStaked"
+                    style={{ margin: "0 auto", textAlign: "center" }}
+                  >
+                    User does not own NFTs
+                  </p>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns:
+                      "repeat(auto-fill, minmax(200px, 1fr))",
+                    gap: "20px",
+                    padding: "20px",
                   }}
                 >
                   {unstakedNFTs.map((tokenId) => (
                     <div
                       key={tokenId}
                       style={{
-                        margin: "10px",
-                        textAlign: "center",
-                        border: "2px solid black", // Add border here
+                        border: "2px solid black",
                         borderRadius: "10px",
                         padding: "10px",
-                        width: "200px", // Set a fixed width for each item
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center", // Center items horizontally
                       }}
                     >
                       <Image
                         src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
                         alt="NFT"
-                        width={200} // Add a width property here
-                        height={200} // Add a height property here
+                        width={200}
+                        height={200}
                         style={{
                           width: "100%",
                           height: "auto",
@@ -253,7 +268,7 @@ const ViewUnstaked: React.FC = () => {
                         onClick={() => {
                           stakeNFT(tokenId);
                           toast.warn(
-                            "Please wait for transaction to be prompted after approval"
+                            "Please wait for transaction to be prompted"
                           );
                         }}
                       >
@@ -270,8 +285,5 @@ const ViewUnstaked: React.FC = () => {
     </div>
   );
 };
-
-// Remove the existing default export statement
-// export default ViewUnstaked;
 
 export default ViewUnstaked;

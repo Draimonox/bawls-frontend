@@ -299,6 +299,10 @@ header ul {
   transition: all 0.25s;
   -webkit-transition: all 0.25s;
   cursor: pointer; /* Change cursor to pointer */
+  text-align: center;
+  justify-content: center;
+  margin: auto; /* Center horizontally */
+  display: block; /* Make it a block element */
 }
 
 #Claim-Rewards:hover {
@@ -325,7 +329,10 @@ header ul {
 
 #rewardBalance {
   font-size: 100px;
-  /* margin-bottom: -100px; */
+}
+#rewardBalances {
+  font-size: 100px;
+  text-align: center;
 }
 
 @media screen and (max-width: 768px) {
@@ -444,9 +451,9 @@ header ul {
   }
 }
 
-/* .unstakedNFTsContainer {
+.unstakedNFTsContainer {
   flex-direction: row !important;
-} */
+}
 
 .unstakedNFTS {
   font-size: xx-large;
@@ -489,13 +496,25 @@ header ul {
 }
 
 .noNftStaked {
-  text-align: center !important;
   font-size: 23px;
   font-weight: bold;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center !important;
+  text-align: center !important;
 }
 
-.noNFTS {
+#NoNFTsBruh {
   font-size: 23px;
   font-weight: bold;
+  white-space: nowrap;
+  display: flex;
+  justify-content: center !important;
   text-align: center !important;
+}
+
+.unclaimedBawls {
+  font-size: xx-large;
+  text-align: center;
+  font-weight: bold;
 }

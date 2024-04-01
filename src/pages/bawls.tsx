@@ -100,26 +100,51 @@ const ClaimBawls: React.FC = () => {
   // Render content based on current route
   return (
     <>
-      {router.pathname === "/bawls" && <Header />}
-      <div key={rewardTokenBalance}>
-        <h1>Your Unclaimed BAWLS</h1>
-        <p id="rewardBalance">{rewardTokenBalance}</p>
-        {router.pathname === "/bawls" && (
-          <button
-            id="Claim-Rewards"
-            onClick={async () => {
-              await handleClaimRewards();
-              toast.success(
-                "Rewards Claimed! Please wait for the transaction to be confirmed."
-              );
-            }}
-            disabled={!walletSigner || claiming}
-          >
-            {claiming ? "Claiming..." : "Claim Rewards"}
-          </button>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </div>
+      {router.pathname === "/bawls" && (
+        <>
+          <Header />
+          <div>
+            <div key={rewardTokenBalance}>
+              <h1 className="unclaimedBawls">Your Unclaimed BAWLS</h1>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <p style={{ marginTop: "150px" }} id="rewardBalances">
+                  {rewardTokenBalance}
+                </p>
+                <button
+                  id="Claim-Rewards"
+                  onClick={async () => {
+                    await handleClaimRewards();
+                  }}
+                  disabled={!walletSigner || claiming}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {claiming ? "Claiming..." : "Claim Rewards"}
+                </button>
+              </div>
+              {error && <p style={{ color: "red" }}>{error}</p>}
+            </div>
+          </div>
+        </>
+      )}
+
+      {router.pathname === "/" && (
+        <div key={rewardTokenBalance}>
+          <h1 className="unclaimedBawls">Your Unclaimed BAWLS</h1>
+          <p id="rewardBalance">{rewardTokenBalance}</p>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </div>
+      )}
     </>
   );
 };

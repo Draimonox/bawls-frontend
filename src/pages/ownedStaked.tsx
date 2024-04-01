@@ -104,70 +104,75 @@ const ViewStaked = () => {
   }
   return (
     <div>
-      {router?.pathname == "/" ? (
+      {router?.pathname === "/" ? (
         <div>
           <h1 className="stakedNFT">NFTs Owned & Staked</h1>
           <p id="ownedNftStaked">{ownedStakedNFTs.length}</p>
         </div>
       ) : (
         <>
-          {router.pathname === "/" && (
-            <>
-              <Header />
-            </>
-          )}
+          {router.pathname === "/" && <Header />}
           <Header />
-          <h1 className="unstakedNFTS">Staked & Owned NFTs</h1>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              gap: "20px",
-              padding: "20px",
-            }}
-          >
+          <div>
+            <h1 className="unstakedNFTS">Staked & Owned NFTs</h1>
             {ownedStakedNFTs.length === 0 ? (
-              <div>
-                <p className="noNftStaked">No NFTs staked</p>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <p id="NoNFTsBruh" style={{ textAlign: "center" }}>
+                  No NFTs staked
+                </p>
               </div>
             ) : (
-              ownedStakedNFTs.map((tokenId, index) => (
-                <div
-                  key={tokenId}
-                  style={{
-                    border: "2px solid black",
-                    borderRadius: "10px",
-                    padding: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center", // Center items horizontally
-                  }}
-                >
-                  <Image
-                    src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
-                    alt="NFT"
-                    width={200} // Add a width property here
-                    height={200} // Add a height property here
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                  gap: "20px",
+                  padding: "20px",
+                }}
+              >
+                {ownedStakedNFTs.map((tokenId, index) => (
+                  <div
+                    key={tokenId}
                     style={{
-                      width: "100%",
-                      height: "auto",
+                      border: "2px solid black",
                       borderRadius: "10px",
-                      marginBottom: "10px",
+                      padding: "10px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center", // Center items horizontally
                     }}
-                  />
-                  <Title
-                    className="NFTID"
-                    style={{ marginBottom: "10px" }}
-                  >{`NFT ID: ${tokenId}`}</Title>
-                  <Button
-                    className="unstakeButton"
-                    onClick={() => handleUnstake(tokenId)}
-                    style={{ alignSelf: "center" }} // Center the button
                   >
-                    Unstake NFT
-                  </Button>
-                </div>
-              ))
+                    <Image
+                      src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
+                      alt="NFT"
+                      width={200}
+                      height={200}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "10px",
+                        marginBottom: "10px",
+                      }}
+                    />
+                    <Title className="NFTID" style={{ marginBottom: "10px" }}>
+                      {`NFT ID: ${tokenId}`}
+                    </Title>
+                    <Button
+                      className="unstakeButton"
+                      onClick={() => handleUnstake(tokenId)}
+                      style={{ alignSelf: "center" }}
+                    >
+                      Unstake NFT
+                    </Button>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         </>
