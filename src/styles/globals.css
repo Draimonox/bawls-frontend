@@ -577,6 +577,8 @@ header ul {
   #homeButton {
     left: 100px;
     font-size: 10px;
+    padding: 5.5px 20px;
+    margin-top: -5px;
   }
 }
 
