@@ -104,7 +104,7 @@ const ClaimBawls: React.FC = () => {
         <>
           <Header />
           <div>
-            <div key={rewardTokenBalance}>
+            <div className="unclaimedBawlsNumber" key={rewardTokenBalance}>
               <h1 className="unclaimedBawls">Your Unclaimed BAWLS</h1>
               <div
                 style={{
@@ -132,7 +132,6 @@ const ClaimBawls: React.FC = () => {
                   {claiming ? "Claiming..." : "Claim Rewards"}
                 </button>
               </div>
-              {error && <p style={{ color: "red" }}>{error}</p>}
             </div>
           </div>
         </>
@@ -140,9 +139,8 @@ const ClaimBawls: React.FC = () => {
 
       {router.pathname === "/" && (
         <div key={rewardTokenBalance}>
-          <h1 className="unclaimedBawls">Your Unclaimed BAWLS</h1>
+          <h1 className="unclaimedBawlses">Your Unclaimed BAWLS</h1>
           <p id="rewardBalance">{rewardTokenBalance}</p>
-          {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
       )}
     </>

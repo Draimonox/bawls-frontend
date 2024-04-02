@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import image from "../../styles/bawlsPic.png";
 import Image from "next/image";
 import Link from "next/link";
+import router from "next/router";
 
 const Header: React.FC = () => {
   const [walletSigner, setWalletSigner] = useState(null);
@@ -102,16 +103,24 @@ const Header: React.FC = () => {
             marginLeft: "25px",
           }}
         >
-          <Link href="/">
-            <Image src={image} alt="BAWLS" width={50} height={50} />
-          </Link>
+          <div>
+            <Image
+              src={image}
+              alt="BAWLS"
+              width={50}
+              height={50}
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push("/")}
+            />
+          </div>
           <p
             style={{
               fontWeight: "bold",
               fontSize: "14px",
               marginTop: "5px",
-              marginLeft: "-7px",
+              marginLeft: "-4px",
               color: "black",
+              fontFamily: "Impact, fantasy",
             }}
           >
             TezTickles
@@ -134,6 +143,11 @@ const Header: React.FC = () => {
               Connect Wallet
             </button>
           )}
+        </div>
+        <div>
+          <Link id="homeButton" href="https://tezticklez.com/">
+            <h1>Home</h1>
+          </Link>
         </div>
       </div>
     </header>

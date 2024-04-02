@@ -33,6 +33,7 @@ header {
   color: white;
   padding: 3px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: default;
 }
 
 header ul {
@@ -41,6 +42,7 @@ header ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+  cursor: default;
 }
 
 @media screen and (max-width: 768px) {
@@ -145,6 +147,7 @@ header ul {
 
 .header-content {
   position: relative;
+  cursor: default;
 }
 
 .connect-wallet-button {
@@ -463,6 +466,13 @@ header ul {
   font-weight: bold;
 }
 
+.unstakedNFT {
+  font-size: 30px !important;
+
+  text-align: left;
+  font-weight: bold;
+}
+
 .unstakeButton {
   padding: 2.5px 7.5px;
   border: 0;
@@ -507,7 +517,6 @@ header ul {
 #NoNFTsBruh {
   font-size: 23px;
   font-weight: bold;
-  white-space: nowrap;
   display: flex;
   justify-content: center !important;
   text-align: center !important;
@@ -517,4 +526,48 @@ header ul {
   font-size: xx-large;
   text-align: center;
   font-weight: bold;
+}
+
+@media screen and (max-width: 912px) and (max-height: 1368px),
+  screen and (max-width: 1368px) and (max-height: 912px) {
+  .unclaimedBawls {
+    font-size: xx-large;
+    text-align: center !important;
+    font-weight: bold;
+  }
+
+  #Claim-Rewards {
+    font-size: 20px;
+  }
+
+  #rewardBalance {
+    font-size: 30px;
+    text-align: left;
+    margin-left: 9px;
+  }
+  .unclaimedBawlses {
+    font-size: 13px !important;
+    margin-left: 10px;
+  }
+
+  .unstakedNFT {
+    font-size: 13px !important;
+    margin-left: 40px;
+  }
+}
+
+#homeButton {
+  padding: 8.5px 25px;
+  border: 0;
+  border-radius: 100px;
+  background-color: #c91c68;
+  color: #ffffff;
+  font-weight: bold;
+  transition: all 0.25s;
+  -webkit-transition: all 0.25s;
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: 20px;
+  left: 150px;
 }
