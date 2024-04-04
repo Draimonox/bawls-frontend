@@ -50,7 +50,6 @@ const Dashboard: React.FC = () => {
           <button
             className="dashboard-button"
             onClick={() => handleNavigate("/ownedStaked")}
-            disabled={!isWalletConnected}
           >
             View
           </button>
@@ -64,7 +63,6 @@ const Dashboard: React.FC = () => {
           <button
             className="dashboard-button"
             onClick={() => handleNavigate("/viewUnstaked")}
-            disabled={!isWalletConnected}
           >
             View & Stake
           </button>
@@ -78,7 +76,6 @@ const Dashboard: React.FC = () => {
           <button
             className="dashboard-button"
             onClick={() => handleNavigate("/bawls")}
-            disabled={!isWalletConnected}
           >
             Claim
           </button>
