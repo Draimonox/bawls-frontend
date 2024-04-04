@@ -207,78 +207,85 @@ const ViewUnstaked: React.FC = () => {
         </div>
       ) : (
         <>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
+          {!walletSigner ? (
             <div>
-              {unstakedNFTs.length === 0 ? (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <p
-                    className="noNftStaked"
-                    style={{ margin: "0 auto", textAlign: "center" }}
-                  >
-                    User does not own NFTs
-                  </p>
-                </div>
+              <p id="NoNFTsBruh" style={{ textAlign: "center" }}>
+                No NFTs Owned
+              </p>
+            </div>
+          ) : (
+            <>
+              {loading ? (
+                <p>Loading...</p>
               ) : (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fill, minmax(200px, 1fr))",
-                    gap: "20px",
-                    padding: "20px",
-                  }}
-                >
-                  {unstakedNFTs.map((tokenId) => (
+                <div>
+                  {unstakedNFTs.length === 0 ? (
                     <div
-                      key={tokenId}
                       style={{
-                        border: "2px solid black",
-                        borderRadius: "10px",
-                        padding: "10px",
                         display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center", // Center items horizontally
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      <Image
-                        src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
-                        alt="NFT"
-                        width={200}
-                        height={200}
-                        style={{
-                          width: "100%",
-                          height: "auto",
-                          borderRadius: "10px",
-                          marginBottom: "10px",
-                        }}
-                      />
-                      <p className="NFTID" style={{ marginBottom: "10px" }}>
-                        NFT ID: {tokenId}
+                      <p id="NoNFTsBruh" style={{ textAlign: "center" }}>
+                        No NFTs Owned
                       </p>
-                      <button
-                        className="stakeButton"
-                        onClick={() => {
-                          stakeNFT(tokenId);
-                          toast.warn(
-                            "Please wait for transaction to be prompted"
-                          );
-                        }}
-                      >
-                        Stake NFT
-                      </button>
                     </div>
-                  ))}
+                  ) : (
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fill, minmax(200px, 1fr))",
+                        gap: "20px",
+                        padding: "20px",
+                      }}
+                    >
+                      {unstakedNFTs.map((tokenId) => (
+                        <div
+                          key={tokenId}
+                          style={{
+                            border: "2px solid black",
+                            borderRadius: "10px",
+                            padding: "10px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center", // Center items horizontally
+                          }}
+                        >
+                          <Image
+                            src={`https://api.metafuse.me/assets/3d543615-97c5-4e32-ab22-245a90b317b4/${tokenId}.png`}
+                            alt="NFT"
+                            width={200}
+                            height={200}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              borderRadius: "10px",
+                              marginBottom: "10px",
+                            }}
+                          />
+                          <p className="NFTID" style={{ marginBottom: "10px" }}>
+                            NFT ID: {tokenId}
+                          </p>
+                          <button
+                            className="stakeButton"
+                            onClick={() => {
+                              stakeNFT(tokenId);
+                              toast.warn(
+                                "Please wait for transaction to be prompted"
+                              );
+                            }}
+                          >
+                            Stake NFT
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
+            </>
           )}
         </>
       )}
