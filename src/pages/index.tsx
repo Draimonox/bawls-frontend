@@ -1,17 +1,13 @@
 import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import Image from "next/image";
-import Link from "next/link";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import StakedNFTs from "./totalStaked";
 import OwnedStaked from "./ownedStaked";
-import NFTContractABI from "../../TezTickles.json";
 import ViewUnstaked from "../pages/viewUnstaked";
 import ClaimBawls from "./bawls";
-import router, { useRouter } from "next/router";
-import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 import Header from "./components/Header";
+import Link from "next/link";
 
 declare global {
   interface Window {
@@ -32,6 +28,10 @@ const Dashboard: React.FC = () => {
     }
   }, []);
 
+  const handleNavigate = (path: string) => {
+    router.push(path);
+  };
+
   return (
     <div className="dashboard">
       <div className="box box1">
@@ -47,11 +47,13 @@ const Dashboard: React.FC = () => {
           <OwnedStaked />
         </div>
         <div className="button-container">
-          <Link href="/ownedStaked">
-            <button className="dashboard-button" disabled={!isWalletConnected}>
-              View
-            </button>
-          </Link>
+          <button
+            className="dashboard-button"
+            onClick={() => handleNavigate("/ownedStaked")}
+            disabled={!isWalletConnected}
+          >
+            View
+          </button>
         </div>
       </div>
       <div className="box box3">
@@ -59,23 +61,27 @@ const Dashboard: React.FC = () => {
           <ViewUnstaked />
         </div>
         <div className="button-container">
-          <Link href="/viewUnstaked">
-            <button className="dashboard-button" disabled={!isWalletConnected}>
-              View & Stake
-            </button>
-          </Link>
+          <button
+            className="dashboard-button"
+            onClick={() => handleNavigate("/viewUnstaked")}
+            disabled={!isWalletConnected}
+          >
+            View & Stake
+          </button>
         </div>
       </div>
       <div className="box box4">
         <div className="claimBawls">
-          {router.pathname !== "/bawls" && <ClaimBawls />}
+          <ClaimBawls />
         </div>
         <div className="button-container">
-          <Link href="/bawls">
-            <button className="dashboard-button" disabled={!isWalletConnected}>
-              Claim
-            </button>
-          </Link>
+          <button
+            className="dashboard-button"
+            onClick={() => handleNavigate("/bawls")}
+            disabled={!isWalletConnected}
+          >
+            Claim
+          </button>
         </div>
       </div>
     </div>
