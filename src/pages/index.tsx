@@ -28,6 +28,16 @@ const Dashboard: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Perform any actions you want to repeat every 30 seconds here
+      console.log("Refreshing dashboard...");
+    }, 30000); // Refresh every 30 seconds
+
+    // Clear the interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
   const handleNavigate = (path: string) => {
     router.push(path);
   };

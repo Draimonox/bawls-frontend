@@ -60,7 +60,7 @@ const ClaimBawls: React.FC = () => {
     fetchRewardTokenBalance();
 
     // Refresh every minute
-    const interval = setInterval(fetchRewardTokenBalance, 1);
+    const interval = setInterval(fetchRewardTokenBalance, 30000);
 
     // Clean up the interval on component unmount
     return () => clearInterval(interval);
