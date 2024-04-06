@@ -87,7 +87,8 @@ const ClaimBawls: React.FC = () => {
       const unclaimedRewards = stakeInfo[1]; // Assuming unclaimedRewards is the second element
 
       if (!isNaN(Number(unclaimedRewards))) {
-        setRewardTokenBalance(Number(unclaimedRewards));
+        const balanceInEther = ethers.formatEther(unclaimedRewards);
+        setRewardTokenBalance(Math.floor(parseFloat(balanceInEther)));
       }
     } catch (error) {
       console.error("Error claiming rewards:", error);
