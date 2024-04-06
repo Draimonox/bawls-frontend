@@ -50,7 +50,8 @@ const ClaimBawls: React.FC = () => {
 
         // Ensure that unclaimedRewards is a valid number
         if (!isNaN(Number(unclaimedRewards))) {
-          setRewardTokenBalance(Number(unclaimedRewards));
+          const balanceInEther = ethers.formatEther(unclaimedRewards);
+          setRewardTokenBalance(Math.floor(parseFloat(balanceInEther)));
         }
       } catch (error) {
         console.error("Error fetching reward token balance:", error);
