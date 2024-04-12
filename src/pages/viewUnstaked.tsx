@@ -26,20 +26,6 @@ const ViewUnstaked: React.FC = () => {
   const [isApproved, setIsApproved] = useState<boolean>(false);
 
   useEffect(() => {
-    async function getWalletSigner() {
-      try {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        const signer = await provider.getSigner();
-        setWalletSigner(signer);
-      } catch (error) {
-        console.error("Error getting wallet signer:", error);
-      }
-    }
-
-    getWalletSigner();
-  }, []);
-
-  useEffect(() => {
     if (!walletSigner) return;
     const fetchUnstakedNFTs = async () => {
       try {

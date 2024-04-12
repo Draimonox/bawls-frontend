@@ -19,19 +19,6 @@ const ViewStaked = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function getWalletSigner() {
-      try {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        const signer = await provider.getSigner();
-        setWalletSigner(signer);
-      } catch (error) {
-        console.error("Error getting wallet signer:", error);
-      }
-    }
-    getWalletSigner();
-  }, []);
-
-  useEffect(() => {
     if (!walletSigner) return;
     const fetchOwnedStakedNFTs = async () => {
       try {

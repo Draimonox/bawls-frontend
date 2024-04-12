@@ -19,20 +19,6 @@ const ClaimBawls: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const getWalletSigner = async () => {
-      try {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        const signer = await provider.getSigner();
-        setWalletSigner(signer);
-      } catch (error) {
-        console.error("Error getting wallet signer:", error);
-      }
-    };
-
-    getWalletSigner();
-  }, []);
-
-  useEffect(() => {
     const fetchRewardTokenBalance = async () => {
       if (!walletSigner) return;
 

@@ -151,7 +151,7 @@ header ul {
 }
 
 .connect-wallet-button {
-  padding: 12.5px 30px;
+  /* padding: 12.5px 30px; */
   border: 0;
   border-radius: 100px;
   background-color: #c91c68;
@@ -169,6 +169,11 @@ header ul {
   background-color: #cd5389;
   box-shadow: 0 0 20px #930b47;
   transform: scale(1.1);
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: 12px;
+  right: 20px;
 }
 
 .connect-wallet-button:active {
@@ -180,6 +185,15 @@ header ul {
 .wallet-address-container {
   display: flex;
   align-items: center;
+}
+
+.connect-wallet-button div {
+  background-color: #c91c68;
+}
+
+.connect-wallet-button button:hover {
+  background-color: #c91c68;
+  color: #ffffff;
 }
 
 .wallet-address {
@@ -197,6 +211,13 @@ header ul {
 }
 
 @media screen and (max-width: 768px) {
+  .connect-wallet-button div {
+    font-size: 12px;
+    border: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
   .wallet-address {
     margin-left: 127px;
     font-size: 12px;
@@ -207,7 +228,6 @@ header ul {
   .connect-wallet-button {
     margin-left: 123px;
     font-size: 10px !important;
-    padding: 6px 12px !important;
   }
 }
 

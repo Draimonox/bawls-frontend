@@ -4,40 +4,42 @@ import image from "../../styles/bawlsPic.png";
 import Image from "next/image";
 import Link from "next/link";
 import router from "next/router";
+import { ConnectKitButton } from "connectkit";
 
 const Header: React.FC = () => {
   const [walletSigner, setWalletSigner] = useState(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const loadWalletSigner = async () => {
-      const walletAddress = localStorage.getItem("walletAddress");
-      if (walletAddress) {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        try {
-          const signer = await provider.getSigner();
-          await window.ethereum.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0xa86a" }], // Switch to Avalanche C-Chain
-          });
-          setWalletSigner(signer);
-        } catch (error) {
-          console.error("Error loading wallet signer:", error);
-          setWalletSigner(null);
-        }
-      } else {
+  // useEffect(() => {
+  const loadWalletSigner = async () => {
+    const walletAddress = localStorage.getItem("walletAddress");
+    if (walletAddress) {
+      const provider = new ethers.BrowserProvider(window?.ethereum);
+      try {
+        const signer = await provider.getSigner();
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: "0xa86a" }],
+        });
+        setWalletSigner(signer);
+      } catch (error) {
+        console.error("Error loading wallet signer:", error);
         setWalletSigner(null);
       }
-    };
-
-    loadWalletSigner();
-
-    if (walletSigner) {
-      setLoading(false);
+    } else {
+      setWalletSigner(null);
     }
-  }, [walletSigner]);
+  };
+
+  //   loadWalletSigner();
+
+  //   if (walletSigner) {
+  //     setLoading(false);
+  //   }
+  // }, [walletSigner]);
 
   const handleConnectWallet = async () => {
+    console.log("Connecting wallet...");
     if (window.ethereum) {
       try {
         const provider = new ethers.BrowserProvider(window?.ethereum);
@@ -53,10 +55,9 @@ const Header: React.FC = () => {
         if (networkId.toString() !== "43114") {
           await window.ethereum.request({
             method: "wallet_switchEthereumChain",
-            params: [{ chainId: "0xa86a" }], // Switch to Avalanche C-Chain
+            params: [{ chainId: "0xa86a" }],
           });
 
-          // Reload the page to reflect the network change
           window.location.reload();
         }
       } catch (error) {
@@ -89,9 +90,6 @@ const Header: React.FC = () => {
       console.error("Error switching chain:", error);
     }
   };
-
-  // Call switchChain method here if you want it to run on component mount
-  // switchChain(1); // Example of switching to Mainnet (chainId 1)
 
   return (
     <header>
@@ -127,7 +125,15 @@ const Header: React.FC = () => {
           </p>
         </div>
         <div className="wallet-address-container">
-          {!loading && walletSigner?.address && (
+          <div className="connect-wallet-button">
+            <ConnectKitButton
+              customTheme={{
+                "--ck-border-radius": 100000,
+                "--ck-accent-color": "#c91c68",
+              }}
+            ></ConnectKitButton>
+          </div>
+          {/* {!loading && walletSigner?.address && (
             <>
               <p className="wallet-address">
                 Wallet: {walletSigner?.address.slice(0, 5)}...
@@ -138,11 +144,11 @@ const Header: React.FC = () => {
           {!walletSigner?.address && (
             <button
               className="connect-wallet-button"
-              onClick={handleConnectWallet}
+              onClick={loadWalletSigner}
             >
               Connect Wallet
             </button>
-          )}
+          )} */}
         </div>
         <div>
           <Link id="homeButton" href="https://tezticklez.com/">

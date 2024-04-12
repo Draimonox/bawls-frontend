@@ -20,15 +20,6 @@ const Dashboard: React.FC = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
   useEffect(() => {
-    // Check if MetaMask is connected
-    if (window.ethereum && window.ethereum.isConnected()) {
-      setIsWalletConnected(true);
-    } else {
-      setIsWalletConnected(false);
-    }
-  }, []);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       // Perform any actions you want to repeat every 30 seconds here
       console.log("Refreshing dashboard...");
