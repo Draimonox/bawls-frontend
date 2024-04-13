@@ -1,27 +1,34 @@
 // pages/_app.js
 import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { SignerProviderContext } from "@/context/SignerContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <MantineProvider>
-      <Component {...pageProps} />
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-    </MantineProvider>
+    <SignerProviderContext>
+      <MantineProvider>
+        <Component {...pageProps} />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
+      </MantineProvider>
+    </SignerProviderContext>
   );
 }
 

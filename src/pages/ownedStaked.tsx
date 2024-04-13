@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Image from "next/image";
 import { Center, Title, Button } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
+import { useSigner } from "@/context/SignerContext";
 
 const NFTContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
 const StakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
@@ -15,39 +16,29 @@ const ViewStaked = () => {
   const router = useRouter();
   const [ownedStakedNFTs, setOwnedStakedNFTs] = useState([]);
   const [tokenURIs, setTokenURIs] = useState([]);
-  const [walletSigner, setWalletSigner] = useState(null);
   const [loading, setLoading] = useState(true);
+  // from context
+  const { signer, setSigner } = useSigner();
+
+  console.log(`SIGNER`, signer);
 
   useEffect(() => {
-    async function getWalletSigner() {
-      try {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        const signer = await provider.getSigner();
-        setWalletSigner(signer);
-      } catch (error) {
-        console.error("Error getting wallet signer:", error);
-      }
-    }
-    getWalletSigner();
-  }, []);
-
-  useEffect(() => {
-    if (!walletSigner) return;
+    if (!signer) return;
     const fetchOwnedStakedNFTs = async () => {
       try {
         const stakingContract = new ethers.Contract(
           StakingContractAddress,
           StakingContractABI,
-          walletSigner
+          signer
         );
         const stakerInfo = await stakingContract.getStakeInfo(
-          walletSigner.getAddress()
+          signer.getAddress()
         );
         const stakedNFTs = stakerInfo[0].map((tokenId) => tokenId.toString());
         const nftContract = new ethers.Contract(
           NFTContractAddress,
           NFTContractABI,
-          walletSigner
+          signer
         );
         const tokenURIs = await Promise.all(
           stakedNFTs.map(async (tokenId) => {
@@ -68,14 +59,14 @@ const ViewStaked = () => {
       }
     };
     fetchOwnedStakedNFTs();
-  }, [walletSigner]);
+  }, [signer]);
 
   async function handleUnstake(tokenId) {
     try {
       const stakingContract = new ethers.Contract(
         StakingContractAddress,
         StakingContractABI,
-        walletSigner
+        signer
       );
       const tx = await stakingContract.withdraw([tokenId]);
       await tx.wait();
@@ -83,13 +74,13 @@ const ViewStaked = () => {
 
       // Fetch the updated list of owned and staked NFTs
       const stakerInfo = await stakingContract.getStakeInfo(
-        walletSigner.getAddress()
+        signer.getAddress()
       );
       const stakedNFTs = stakerInfo.map((info) => info.tokenId.toString());
       const nftContract = new ethers.Contract(
         NFTContractAddress,
         NFTContractABI,
-        walletSigner
+        signer
       );
       const tokenURIs = await Promise.all(
         stakedNFTs.map(async (tokenId) => {

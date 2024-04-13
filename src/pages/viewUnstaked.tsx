@@ -13,6 +13,7 @@ import { Button, Center, Title, LoadingOverlay, Box } from "@mantine/core";
 import { useAsync } from "react-use";
 import Loader from "../pages/components/loader";
 import { toast } from "react-toastify";
+import { useSigner } from "@/context/SignerContext";
 
 const stakingContractABI = StakingContractABI;
 const stakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
@@ -20,43 +21,30 @@ const nftContractAddress = "0xc2AE13A358500eD76cddb368AdD0fb5de68318A7";
 
 const ViewUnstaked: React.FC = () => {
   const router = useRouter();
-  const [walletSigner, setWalletSigner] = useState<any>(null);
+
   const [unstakedNFTs, setUnstakedNFTs] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isApproved, setIsApproved] = useState<boolean>(false);
+  const { signer, setSigner } = useSigner();
 
   useEffect(() => {
-    async function getWalletSigner() {
-      try {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        const signer = await provider.getSigner();
-        setWalletSigner(signer);
-      } catch (error) {
-        console.error("Error getting wallet signer:", error);
-      }
-    }
-
-    getWalletSigner();
-  }, []);
-
-  useEffect(() => {
-    if (!walletSigner) return;
+    if (!signer) return;
     const fetchUnstakedNFTs = async () => {
       try {
         const nftContract = new ethers.Contract(
           nftContractAddress,
           NFTContractABI,
-          walletSigner
+          signer
         );
 
         const unstakedNFTCount = await nftContract.balanceOf(
-          walletSigner.getAddress()
+          signer.getAddress()
         );
         const unstakedIds: string[] = [];
 
         for (let i = 0; i < Number(unstakedNFTCount); i++) {
           const tokenId = await nftContract.tokenOfOwnerByIndex(
-            walletSigner.getAddress(),
+            signer.getAddress(),
             i
           );
           unstakedIds.push(tokenId.toString());
@@ -71,21 +59,21 @@ const ViewUnstaked: React.FC = () => {
     };
 
     fetchUnstakedNFTs();
-  }, [walletSigner]);
+  }, [signer]);
 
   useEffect(() => {
-    if (!walletSigner) return;
+    if (!signer) return;
 
     const checkApprovalStatus = async () => {
       try {
         const nftContract = new ethers.Contract(
           nftContractAddress,
           NFTContractABI,
-          walletSigner
+          signer
         );
 
         const approvalStatus = await nftContract.getApproved(
-          walletSigner.getAddress(),
+          signer.getAddress(),
           stakingContractAddress
         );
 
@@ -94,11 +82,11 @@ const ViewUnstaked: React.FC = () => {
     };
 
     checkApprovalStatus();
-  }, [walletSigner]);
+  }, [signer]);
 
   const approveNFTs = async () => {
     try {
-      if (!walletSigner) {
+      if (!signer) {
         console.log("Wallet signer not set.");
         toast.warn("Wallet Signer Not Set.");
         return;
@@ -107,7 +95,7 @@ const ViewUnstaked: React.FC = () => {
       const nftContract = new ethers.Contract(
         nftContractAddress,
         NFTContractABI,
-        walletSigner
+        signer
       );
 
       console.log("Approving NFTs for staking contract...");
@@ -135,7 +123,7 @@ const ViewUnstaked: React.FC = () => {
 
   const stakeNFT = async (tokenId: string) => {
     try {
-      if (!walletSigner) {
+      if (!signer) {
         console.log("Wallet signer not set.");
         toast.warn("Wallet Signer Not Set.");
         return;
@@ -144,7 +132,7 @@ const ViewUnstaked: React.FC = () => {
       const nftContract = new ethers.Contract(
         nftContractAddress,
         NFTContractABI,
-        walletSigner
+        signer
       );
 
       console.log("Checking Approval...");
@@ -169,7 +157,7 @@ const ViewUnstaked: React.FC = () => {
       const stakingContract = new ethers.Contract(
         stakingContractAddress,
         stakingContractABI,
-        walletSigner
+        signer
       );
       tx = {};
       console.log("Staking NFT with tokenId:", tokenId);
@@ -207,7 +195,7 @@ const ViewUnstaked: React.FC = () => {
         </div>
       ) : (
         <>
-          {!walletSigner ? (
+          {!signer ? (
             <div>
               <p id="NoNFTsBruh" style={{ textAlign: "center" }}>
                 No NFTs Owned
@@ -272,7 +260,7 @@ const ViewUnstaked: React.FC = () => {
                             className="stakeButton"
                             onClick={() => {
                               stakeNFT(tokenId);
-                              toast.warn(
+                              toast.info(
                                 "Please wait for transaction to be prompted"
                               );
                             }}
