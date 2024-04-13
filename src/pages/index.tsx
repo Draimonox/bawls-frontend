@@ -19,14 +19,14 @@ const Dashboard: React.FC = () => {
   const router = useRouter();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
-  useEffect(() => {
-    // Check if MetaMask is connected
-    if (window.ethereum && window.ethereum.isConnected()) {
-      setIsWalletConnected(true);
-    } else {
-      setIsWalletConnected(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Check if MetaMask is connected
+  //   if (window.ethereum && window.ethereum.isConnected()) {
+  //     setIsWalletConnected(true);
+  //   } else {
+  //     setIsWalletConnected(false);
+  //   }
+  // }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,7 +44,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="dashboard">
-      <div className="box box1">
+      <div className="box">
         <div className="staked-nfts">
           <StakedNFTs />
         </div>

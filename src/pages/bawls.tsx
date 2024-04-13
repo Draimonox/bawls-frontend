@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Header from "./components/Header";
 import stakingABI from "../../stakingNFT.json";
 import { toast } from "react-toastify";
+import { useSigner } from "@/context/SignerContext";
 
 // Define staking contract address and ABI
 const stakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
@@ -12,40 +13,43 @@ const StakingContractABI = stakingABI;
 
 // Define the component
 const ClaimBawls: React.FC = () => {
-  const [walletSigner, setWalletSigner] = useState<any>(null);
   const [rewardTokenBalance, setRewardTokenBalance] = useState<number>(0);
   const [claiming, setClaiming] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { signer, setSigner } = useSigner();
 
-  useEffect(() => {
-    const getWalletSigner = async () => {
-      try {
-        const provider = new ethers.BrowserProvider(window?.ethereum);
-        const signer = await provider.getSigner();
-        setWalletSigner(signer);
-      } catch (error) {
-        console.error("Error getting wallet signer:", error);
-      }
-    };
+  // useEffect(() => {
+  //   async function getsigner() {
+  //     try {
+  //       if (!window.ethereum) {
+  //         console.log("MetaMask not installed.");
+  //         return;
+  //       }
 
-    getWalletSigner();
-  }, []);
+  //       const provider = new ethers.BrowserProvider(window.ethereum);
+  //       const signer = await provider.getSigner();
+  //       setsigner(signer);
+  //     } catch (error) {
+  //       console.error("Error getting wallet signer:", error);
+  //     }
+  //   }
+
+  //   getsigner();
+  // }, []);
 
   useEffect(() => {
     const fetchRewardTokenBalance = async () => {
-      if (!walletSigner) return;
+      if (!signer) return;
 
       const stakingContract = new ethers.Contract(
         stakingContractAddress,
         StakingContractABI,
-        walletSigner
+        signer
       );
 
       try {
-        const stakeInfo = await stakingContract.getStakeInfo(
-          walletSigner.address
-        );
+        const stakeInfo = await stakingContract.getStakeInfo(signer.address);
         const unclaimedRewards = stakeInfo[1]; // Assuming unclaimedRewards is the second element
 
         // Ensure that unclaimedRewards is a valid number
@@ -65,16 +69,16 @@ const ClaimBawls: React.FC = () => {
 
     // Clean up the interval on component unmount
     return () => clearInterval(interval);
-  }, [walletSigner]);
+  }, [signer]);
 
   // Function to handle claiming rewards
   const handleClaimRewards = async () => {
-    if (!walletSigner) return;
+    if (!signer) return;
 
     const stakingContract = new ethers.Contract(
       stakingContractAddress,
       StakingContractABI,
-      walletSigner
+      signer
     );
 
     try {
@@ -82,9 +86,7 @@ const ClaimBawls: React.FC = () => {
       setError(null);
       await stakingContract.claimRewards();
 
-      const stakeInfo = await stakingContract.getStakeInfo(
-        walletSigner.address
-      );
+      const stakeInfo = await stakingContract.getStakeInfo(signer.address);
       const unclaimedRewards = stakeInfo[1]; // Assuming unclaimedRewards is the second element
 
       if (!isNaN(Number(unclaimedRewards))) {
@@ -123,7 +125,7 @@ const ClaimBawls: React.FC = () => {
                   onClick={async () => {
                     await handleClaimRewards();
                   }}
-                  disabled={!walletSigner || claiming}
+                  disabled={!signer || claiming}
                   style={{
                     display: "flex",
                     flexDirection: "column",

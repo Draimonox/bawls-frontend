@@ -213,10 +213,10 @@ header ul {
 
 .staked-nfts {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+
   font-size: xx-large;
-  margin-left: -500px;
 }
 
 #nftStaked {
@@ -233,22 +233,24 @@ header ul {
 
   #nftStaked {
     font-size: 30px;
-    margin-left: 0;
+    width: 100%;
     align-items: flex-start;
   }
 }
 
 .owned-Staked {
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
+  width: 100%;
   align-items: flex-start;
   font-size: xx-large;
-  margin-left: -450px;
+  /* margin-left: -450px; */
 }
 
 #ownedNftStaked {
   font-size: 100px;
   /* margin-bottom: -125px; */
+  width: 100% !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -267,27 +269,28 @@ header ul {
 
 .viewUnstaked {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+
+  justify-content: flex-start;
+  width: 100%;
   font-size: xx-large;
-  margin-left: -550px;
 }
 
 #unstakedNFT {
   font-size: 100px;
+  width: 100%;
 }
 
 @media screen and (max-width: 768px) {
   .viewUnstaked {
     font-size: 13px;
-    margin-left: -35px;
+    width: 100%;
     align-items: flex-start;
   }
 
   #unstakedNFT {
     font-size: 30px;
-    margin-left: 0;
     align-items: flex-start;
+    width: 100%;
   }
 }
 
@@ -327,7 +330,8 @@ header ul {
   flex-direction: column;
   align-items: flex-start;
   font-size: xx-large;
-  margin-left: -430px;
+  /* margin-left: -430px; */
+  width: 100%;
 }
 
 #rewardBalance {
@@ -432,25 +436,25 @@ header ul {
 
 .unstakedNFT {
   font-size: xx-large;
-  margin-left: 75px;
+  width: 100%;
 }
 
 .unstakedNFTNumber {
-  text-align: center;
   font-weight: bold;
   font-size: 100px;
-  margin-left: -175px;
+  width: 100%;
+  /* margin-left: -175px; */
 }
 
 @media screen and (max-width: 912px) and (max-height: 1368px),
   screen and (max-width: 1368px) and (max-height: 912px) {
   .unstakedNFTNumber {
     font-size: 30px !important;
-    margin-left: -65px;
+    margin-left: 10px !important;
   }
   .unstakedNFT {
     font-size: 15px !important;
-    margin-left: 40px;
+    width: 100%;
   }
 }
 
@@ -462,14 +466,13 @@ header ul {
   font-size: xx-large;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  text-align: center;
+  text-align: center !important;
   font-weight: bold;
 }
 
 .unstakedNFT {
   font-size: 30px !important;
-
-  text-align: left;
+  width: 100%;
   font-weight: bold;
 }
 
@@ -524,8 +527,9 @@ header ul {
 
 .unclaimedBawls {
   font-size: xx-large;
-  text-align: center;
+  text-align: center !important;
   font-weight: bold;
+  width: 100%;
 }
 
 @media screen and (max-width: 912px) and (max-height: 1368px),
@@ -543,16 +547,17 @@ header ul {
   #rewardBalance {
     font-size: 30px;
     text-align: left;
-    margin-left: 9px;
+    width: 100%;
   }
   .unclaimedBawlses {
     font-size: 13px !important;
-    margin-left: 10px;
+    width: 100%;
   }
 
   .unstakedNFT {
     font-size: 13px !important;
-    margin-left: 40px;
+    width: 100%;
+    margin-left: 10px;
   }
 }
 
@@ -600,7 +605,8 @@ header ul {
 
   .unstakedNFTNumber {
     font-size: 100px !important;
-    margin-left: -165px;
+
+    margin-left: 20px !important;
   }
   .unclaimedBawlses {
     font-size: 30px !important;
@@ -618,7 +624,8 @@ header ul {
 
   .unstakedNFTNumber {
     font-size: 30px !important;
-    margin-right: -85px;
+    width: 100%;
+    margin-left: 20px !important;
   }
   .unclaimedBawlses {
     font-size: 15px !important;
@@ -636,8 +643,7 @@ header ul {
 
   .unstakedNFTNumber {
     font-size: 100px !important;
-    margin-right: -85px;
-    margin-left: -270px;
+    width: 100%;
   }
   .unclaimedBawlses {
     font-size: 30px !important;
