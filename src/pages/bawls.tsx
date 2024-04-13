@@ -146,7 +146,7 @@ const ClaimBawls: React.FC = () => {
               <h1 className="unclaimedBawls">Your Unclaimed BAWLS</h1>
               <p
                 style={{
-                  textAlign: "Center",
+                  textAlign: "center",
                   fontWeight: "bold",
                   fontSize: "20px",
                 }}
