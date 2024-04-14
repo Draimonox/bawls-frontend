@@ -11,11 +11,9 @@ const contractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 const contractABI = stakingABI;
 
 const Header: React.FC = () => {
-  // const [walletSigner, setWalletSigner] = useState(null);
-
   const { signer, setSigner } = useSigner();
   const [rewardsPerUnitTime, setRewardsPerUnitTime] =
-    useState<ethers.BigNumberish | null>(null);
+    useState<ethers.BigNumberish | null>(0);
 
   useEffect(() => {
     const loadRewardsPerUnitTime = async () => {
@@ -167,9 +165,7 @@ const Header: React.FC = () => {
               fontWeight: "bold",
             }}
           >
-            {rewardsPerUnitTime
-              ? parseFloat(ethers.formatEther(rewardsPerUnitTime)).toString()
-              : "(Loading...)"}{" "}
+            {parseFloat(ethers.formatEther(rewardsPerUnitTime)).toString()}{" "}
             Bawls/min per NFT
           </p>
         </div>
