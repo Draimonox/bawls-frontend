@@ -19,19 +19,18 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const loadRewardsPerUnitTime = async () => {
-      if (signer) {
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-        const rewardsPerUnitTimeWei = await contract.getRewardsPerUnitTime();
-        setRewardsPerUnitTime(rewardsPerUnitTimeWei);
-      }
+      const provider = new ethers.BrowserProvider(window?.ethereum);
+      const contract = new ethers.Contract(
+        contractAddress,
+        contractABI,
+        provider
+      );
+      const rewardsPerUnitTimeWei = await contract.getRewardsPerUnitTime();
+      setRewardsPerUnitTime(rewardsPerUnitTimeWei);
     };
 
     loadRewardsPerUnitTime();
-  }, [signer]);
+  }, []);
 
   // useEffect(() => {
   //   const loadWalletSigner = async () => {
@@ -170,7 +169,7 @@ const Header: React.FC = () => {
           >
             {rewardsPerUnitTime
               ? parseFloat(ethers.formatEther(rewardsPerUnitTime)).toString()
-              : "(Connect to View)"}{" "}
+              : "(Loading...)"}{" "}
             Bawls/min per NFT
           </p>
         </div>
