@@ -3,12 +3,9 @@ import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import Header from "./components/Header";
 import stakingABI from "../../stakingNFT.json";
-import { toast } from "react-toastify";
 import { useSigner } from "@/context/SignerContext";
-import ownedStakedNFTs from "../pages/ownedStaked";
 import stakingContractABI from "../../stakingNFT.json";
 import NFTContractABI from "../../TezTickles.json";
-import { Center } from "@mantine/core";
 
 const stakingContractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 const StakingContractABI = stakingABI;
@@ -18,12 +15,29 @@ const ClaimBawls: React.FC = () => {
   const [rewardTokenBalance, setRewardTokenBalance] = useState<number>(0);
   const [claiming, setClaiming] = useState<boolean>(false);
   const [rewardsPerMinute, setRewardsPerMinute] = useState<string>("0");
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { signer, setSigner } = useSigner();
+  const { signer } = useSigner();
   const [ownedStakedNFTs, setOwnedStakedNFTs] = useState([]);
   const [tokenURIs, setTokenURIs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [rewardsPerUnitTime, setRewardsPerUnitTime] =
+    useState<ethers.BigNumberish | null>(null);
+
+  useEffect(() => {
+    const loadRewardsPerUnitTime = async () => {
+      if (signer) {
+        const contract = new ethers.Contract(
+          stakingContractAddress,
+          stakingContractABI,
+          signer
+        );
+        const rewardsPerUnitTimeWei = await contract.getRewardsPerUnitTime();
+        setRewardsPerUnitTime(rewardsPerUnitTimeWei);
+      }
+    };
+
+    loadRewardsPerUnitTime();
+  }, [signer]);
 
   useEffect(() => {
     const fetchOwnedStakedNFTs = async () => {
@@ -84,10 +98,9 @@ const ClaimBawls: React.FC = () => {
           setRewardTokenBalance(Math.floor(parseFloat(balanceInEther)));
         }
 
-        const rewardsPerNFTPerMinute = ethers.parseUnits("420", "ether");
         const rewardsPerMinute =
-          ownedStakedNFTs.length *
-          parseFloat(ethers.formatEther(rewardsPerNFTPerMinute));
+          parseFloat(ethers.formatEther(rewardsPerUnitTime)) *
+          ownedStakedNFTs.length;
         setRewardsPerMinute(rewardsPerMinute.toString());
       } catch (error) {
         console.error("Error fetching reward token balance:", error);
@@ -99,7 +112,7 @@ const ClaimBawls: React.FC = () => {
     const interval = setInterval(fetchRewardTokenBalance, 30000);
 
     return () => clearInterval(interval);
-  }, [signer, ownedStakedNFTs.length]);
+  }, [signer, ownedStakedNFTs.length, rewardsPerUnitTime]);
 
   const handleClaimRewards = async () => {
     if (!signer) return;
@@ -112,7 +125,6 @@ const ClaimBawls: React.FC = () => {
 
     try {
       setClaiming(true);
-      setError(null);
       await stakingContract.claimRewards();
 
       const stakeInfo = await stakingContract.getStakeInfo(signer.address);
@@ -123,14 +135,12 @@ const ClaimBawls: React.FC = () => {
         setRewardTokenBalance(Math.floor(parseFloat(balanceInEther)));
       }
 
-      const rewardsPerNFTPerMinute = ethers.parseUnits("420", "ether");
       const rewardsPerMinute =
-        ownedStakedNFTs.length *
-        parseFloat(ethers.formatEther(rewardsPerNFTPerMinute));
+        parseFloat(ethers.formatEther(rewardsPerUnitTime)) *
+        ownedStakedNFTs.length;
       setRewardsPerMinute(rewardsPerMinute.toString());
     } catch (error) {
       console.error("Error claiming rewards:", error);
-      setError(error.message || "An error occurred while claiming rewards");
     } finally {
       setClaiming(false);
     }
@@ -151,7 +161,8 @@ const ClaimBawls: React.FC = () => {
                   fontSize: "20px",
                 }}
               >
-                Rewards per minute: {rewardsPerMinute}
+                Rewards per minute:{" "}
+                {rewardsPerMinute ? rewardsPerMinute : "Please connect Wallet"}
               </p>
               <div
                 style={{
@@ -163,6 +174,7 @@ const ClaimBawls: React.FC = () => {
                 <p style={{ marginTop: "150px" }} id="rewardBalances">
                   {rewardTokenBalance}
                 </p>
+
                 <button
                   id="Claim-Rewards"
                   onClick={async () => {
@@ -188,7 +200,6 @@ const ClaimBawls: React.FC = () => {
         <div key={rewardTokenBalance}>
           <h1 className="unclaimedBawlses">Your Unclaimed BAWLS</h1>
           <p id="rewardBalance">{rewardTokenBalance}</p>
-          <p>Rewards per minute: {rewardsPerMinute}</p>
         </div>
       )}
     </>

@@ -446,8 +446,7 @@ header ul {
   /* margin-left: -175px; */
 }
 
-@media screen and (max-width: 912px) and (max-height: 1368px),
-  screen and (max-width: 1368px) and (max-height: 912px) {
+@media screen and (max-width: 912px) and (max-height: 1368px) {
   .unstakedNFTNumber {
     font-size: 30px !important;
     margin-left: 10px !important;
@@ -532,8 +531,7 @@ header ul {
   width: 100%;
 }
 
-@media screen and (max-width: 912px) and (max-height: 1368px),
-  screen and (max-width: 1368px) and (max-height: 912px) {
+@media screen and (max-width: 912px) and (max-height: 1368px) {
   .unclaimedBawls {
     font-size: xx-large;
     text-align: center !important;
@@ -557,7 +555,6 @@ header ul {
   .unstakedNFT {
     font-size: 13px !important;
     width: 100%;
-    margin-left: 10px;
   }
 }
 

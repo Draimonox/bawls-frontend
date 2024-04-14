@@ -5,11 +5,33 @@ import Image from "next/image";
 import Link from "next/link";
 import router from "next/router";
 import { useSigner } from "@/context/SignerContext";
+import stakingABI from "../../../stakingNFT.json";
+
+const contractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
+const contractABI = stakingABI;
 
 const Header: React.FC = () => {
   // const [walletSigner, setWalletSigner] = useState(null);
 
   const { signer, setSigner } = useSigner();
+  const [rewardsPerUnitTime, setRewardsPerUnitTime] =
+    useState<ethers.BigNumberish | null>(null);
+
+  useEffect(() => {
+    const loadRewardsPerUnitTime = async () => {
+      if (signer) {
+        const contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
+        );
+        const rewardsPerUnitTimeWei = await contract.getRewardsPerUnitTime();
+        setRewardsPerUnitTime(rewardsPerUnitTimeWei);
+      }
+    };
+
+    loadRewardsPerUnitTime();
+  }, [signer]);
 
   // useEffect(() => {
   //   const loadWalletSigner = async () => {
@@ -137,6 +159,20 @@ const Header: React.FC = () => {
           <Link id="homeButton" href="https://tezticklez.com/">
             <h1>Home</h1>
           </Link>
+          <p
+            style={{
+              textAlign: "center",
+              color: "black",
+              marginTop: "-25px",
+              height: "100%",
+              fontWeight: "bold",
+            }}
+          >
+            {rewardsPerUnitTime
+              ? parseFloat(ethers.formatEther(rewardsPerUnitTime)).toString()
+              : "(Connect to View)"}{" "}
+            Bawls/min per NFT
+          </p>
         </div>
       </div>
     </header>
