@@ -131,7 +131,7 @@ const Header: React.FC = () => {
               fontFamily: "Impact, fantasy",
             }}
           >
-            TezTickles
+            TezTicklez
           </p>
         </div>
         <div className="wallet-address-container">
