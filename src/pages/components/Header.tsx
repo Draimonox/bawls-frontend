@@ -24,7 +24,9 @@ const Header: React.FC = () => {
         provider
       );
       const rewardsPerUnitTimeWei = await contract.getRewardsPerUnitTime();
-      setRewardsPerUnitTime(rewardsPerUnitTimeWei);
+      setRewardsPerUnitTime(
+        parseFloat(ethers.formatEther(rewardsPerUnitTimeWei))
+      );
     };
 
     loadRewardsPerUnitTime();
@@ -165,8 +167,9 @@ const Header: React.FC = () => {
               fontWeight: "bold",
             }}
           >
-            {parseFloat(ethers.formatEther(rewardsPerUnitTime)).toString()}{" "}
-            Bawls/min per NFT
+            {rewardsPerUnitTime !== null
+              ? `${rewardsPerUnitTime} Bawls/min per NFT`
+              : "Loading..."}
           </p>
         </div>
       </div>
