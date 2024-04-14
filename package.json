@@ -23,6 +23,7 @@
     "react-dom": "^18",
     "react-toastify": "^10.0.5",
     "react-use": "^17.5.0",
+    "regenerator-runtime": "^0.14.1",
     "wagmi": "^2.5.13"
   },
   "devDependencies": {

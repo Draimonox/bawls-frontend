@@ -6,6 +6,7 @@ import Link from "next/link";
 import router from "next/router";
 import { useSigner } from "@/context/SignerContext";
 import stakingABI from "../../../stakingNFT.json";
+import "regenerator-runtime/runtime";
 
 const contractAddress = "0x073407d753BF86AcCFeC45E6Ebc4a6aa660ce1b3";
 const contractABI = stakingABI;
@@ -17,7 +18,9 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const loadRewardsPerUnitTime = async () => {
-      const provider = new ethers.BrowserProvider(window?.ethereum);
+      const provider = window?.ethereum
+        ? new ethers.BrowserProvider(window?.ethereum)
+        : null;
       const contract = new ethers.Contract(
         contractAddress,
         contractABI,
