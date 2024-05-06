@@ -652,7 +652,7 @@ header ul {
   }
 }
 
-@media screen and (width: 1170px) and (height: 2532px) {
+@media screen and (width: 1125px) and (height: 2436px) {
   .box {
     max-height: 500px;
   }
