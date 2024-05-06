@@ -171,7 +171,13 @@ const ClaimBawls: React.FC = () => {
                   alignItems: "center",
                 }}
               >
-                <p style={{ marginTop: "150px" }} id="rewardBalances">
+                <p
+                  style={{
+                    marginTop: "150px",
+                    fontSize: "14px", // Set the default font size here
+                  }}
+                  id="rewardBalances"
+                >
                   {rewardTokenBalance}
                 </p>
 
